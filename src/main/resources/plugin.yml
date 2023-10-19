@@ -1,0 +1,4 @@
+name: BunnieCoins
+version: '${project.version}'
+main: me.bunnie.bunniecoins.BCPlugin
+api-version: '1.20'
