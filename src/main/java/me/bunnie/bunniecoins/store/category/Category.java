@@ -2,6 +2,7 @@ package me.bunnie.bunniecoins.store.category;
 
 import lombok.Data;
 import me.bunnie.bunniecoins.store.category.product.Product;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Category {
 
     public Category(String name) {
         this.name = name;
-        this.displayName = "&d" + name;
+        this.displayName = ChatColor.GRAY + name;
         this.description = new ArrayList<>();
         this.products = new HashMap<>();
         this.icon = Material.BOOK;
@@ -35,5 +36,4 @@ public class Category {
                 .findFirst()
                 .orElse(null);
     }
-
 }

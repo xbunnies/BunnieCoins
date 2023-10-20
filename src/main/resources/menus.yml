@@ -18,7 +18,7 @@ store:
       material: NETHER_STAR
       action: {}
   categories: #This section is for your categories to be displayed within the menu.
-    ranks:
+    rank:
       name: "#F9C7CDRanks"
       lore:
         - "#F9C7CDRanks are global and lifetime packages that"
@@ -64,6 +64,7 @@ confirmation:
     item:
       name: "%product.name%"
       lore:
+        - "%product.lore%"
         - ""
         - "&7Cost: &f%product.cost%"
         - ""
@@ -79,14 +80,6 @@ confirmation:
       slot: [6,7,8,15,16,17,24,25,26]
       action: "CANCEL"
 
-products:
-  serpah:
-    name: "Seraph"
-    category: "ranks"
-    lore:
-      - ""
-    material: EMERALD
-    slot: 4
-    price: 1500
-    commands:
-      - ""
+insufficient-funds:
+  text: "&c&lInsufficient Coins\n \n&0You need more coins to buy %product.name% %category.name%!\n \n\
+    &0Purchase more coins\n&0store.example.com\n\n<link:https://store.example.com> &a&l[OPEN STORE]&0</link>\n"

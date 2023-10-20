@@ -11,19 +11,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class ShopManager {
 
     private final BCPlugin plugin;
-    private final Config configYML, menusYML;
-    private Map<String, Category> categoryMap;
+    private final Config menusYML, productsYML;
+    private final Map<String, Category> categoryMap;
 
     public ShopManager(BCPlugin plugin) {
         this.plugin = plugin;
-        this.configYML = plugin.getConfigYML();
         this.menusYML = plugin.getMenusYML();
+        this.productsYML = plugin.getProductsYML();
         this.categoryMap = new HashMap<>();
-
         this.setupShop();
     }
 
@@ -49,39 +49,45 @@ public class ShopManager {
             }
             categoryMap.put(categoryName, category);
         }
+        plugin.getLogger().log(Level.INFO, "Loaded " + categoryMap.size() + " categories!");
+
+        plugin.getLogger().log(Level.INFO, "Loading Products...");
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (String s : menusYML.getConfigurationSection("products").getKeys(false)) {
+                for (String s : productsYML.getConfigurationSection("products").getKeys(false)) {
                     String productName = ChatUtils.fixCapitalisation(s);
-                    String categoryName = menusYML.getString("products." + s + ".category");
-                    List<String> description = menusYML.getStringList("products." + s + ".lore");
-                    List<String> commands = menusYML.getStringList("products." + s + ".commands");
-                    Material material = Material.valueOf(menusYML.getString("products." + s + ".material"));
-                    int price = menusYML.getInt("products." + s + ".price");
-                    int menuSlot = menusYML.getInt("products." + s + ".slot");
+                    String displayName = productsYML.getString("products." + s  +".name");
+                    String categoryName = productsYML.getString("products." + s + ".category");
+                    List<String> description = productsYML.getStringList("products." + s + ".lore");
+                    List<String> commands = productsYML.getStringList("products." + s + ".commands");
+                    Material material = Material.valueOf(productsYML.getString("products." + s + ".material"));
+                    int price = productsYML.getInt("products." + s + ".price");
+                    int menuSlot = productsYML.getInt("products." + s + ".slot");
 
                     Product product = new Product(productName);
+                    product.setDisplayName(displayName);
                     product.setDescription(description);
                     product.setCommands(commands);
                     product.setIcon(material);
                     product.setCost(price);
                     product.setMenuSlot(menuSlot);
 
+                    if(categoryName == null) continue;
                     Category category = categoryMap.get(ChatUtils.fixCapitalisation(categoryName));
                     if(category == null) {
                         continue;
                     }
-                    //product.setCategory(category);
                     if (productMap.containsKey(productName)) {
                         continue;
                     }
                     productMap.put(productName, product);
                     category.setProducts(productMap);
+
+                    plugin.getLogger().log(Level.INFO, "Loaded " + productMap.size() + " products in " + category.getName() + "!");
                 }
             }
         }.runTaskLater(plugin, 20 * 5);
-
     }
 
     public List<Category> findAllCategories() {

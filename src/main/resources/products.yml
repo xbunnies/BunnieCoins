@@ -1,0 +1,11 @@
+products:
+  serpah:
+    name: "Seraph"
+    category: "rank"
+    lore:
+      - ""
+    material: EMERALD
+    slot: 4
+    price: 1500
+    commands:
+      - ""

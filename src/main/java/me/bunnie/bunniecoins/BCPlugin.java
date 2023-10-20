@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class BCPlugin extends JavaPlugin {
 
     @Getter private static BCPlugin instance;
-    @Getter private Config configYML, menusYML;
+    @Getter private Config configYML, menusYML, productsYML;
     @Getter private ShopManager shopManager;
     @Getter private BCManager bcManager;
 
@@ -36,6 +36,7 @@ public final class BCPlugin extends JavaPlugin {
     private void registerConfigurations() {
         this.configYML = new Config(this, "config", getDataFolder().getAbsolutePath());
         this.menusYML = new Config(this, "menus", getDataFolder().getAbsolutePath());
+        this.productsYML = new Config(this, "products", getDataFolder().getAbsolutePath());
     }
 
     private void registerManagers() {

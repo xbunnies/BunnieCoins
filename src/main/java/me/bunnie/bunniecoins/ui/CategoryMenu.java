@@ -5,6 +5,7 @@ import me.bunnie.bunniecoins.player.BCPlayer;
 import me.bunnie.bunniecoins.store.category.Category;
 import me.bunnie.bunniecoins.store.category.product.Product;
 import me.bunnie.bunniecoins.ui.confirmation.PurchaseConfirmationMenu;
+import me.bunnie.bunniecoins.ui.insufficient.InsufficientFundsMenu;
 import me.bunnie.bunniecoins.utils.ItemBuilder;
 import me.bunnie.bunniecoins.utils.ui.menu.Button;
 import me.bunnie.bunniecoins.utils.ui.menu.Menu;
@@ -67,7 +68,7 @@ public class CategoryMenu extends Menu {
             public ItemStack getItem(Player player) {
                 ArrayList<String> toLore = new ArrayList<>();
                 return new ItemBuilder(product.getIcon())
-                        .setName(product.getName())
+                        .setName(product.getDisplayName())
                         .setLore((ArrayList<String>) product.getDescription())
                         .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
                         .build();
@@ -77,11 +78,15 @@ public class CategoryMenu extends Menu {
             public void onButtonClick(Player player, int slot, ClickType clickType) {
                 int cost = product.getCost();
                 int balance = bcPlayer.getCoins();
-                player.closeInventory();
-                new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("confirmation.size"), player, product).open();
                 if(balance > cost || balance == cost) {
+                    player.closeInventory();
+                    new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("confirmation.size"), player, product).open();
+                    return;
                 }
+                player.closeInventory();
+                new InsufficientFundsMenu(player, category, product).open();
             }
         };
     }
+
 }
