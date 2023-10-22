@@ -1,9 +1,12 @@
 package me.bunnie.bunniecoins;
 
 import lombok.Getter;
+import me.bunnie.bunniecoins.commands.admin.CoinsAdminCommand;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
 import me.bunnie.bunniecoins.database.SQLManager;
+import me.bunnie.bunniecoins.listeners.CoinsListener;
 import me.bunnie.bunniecoins.listeners.PlayerListener;
+import me.bunnie.bunniecoins.listeners.PurchaseListener;
 import me.bunnie.bunniecoins.player.BCPlayerManager;
 import me.bunnie.bunniecoins.store.ShopManager;
 import me.bunnie.bunniecoins.utils.ChatUtils;
@@ -65,11 +68,13 @@ public final class BCPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Arrays.asList(new PlayerListener(this), new MenuListener()
+        Arrays.asList(new PlayerListener(this), new CoinsListener(this),
+                new PurchaseListener(), new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void registerCommands() {
+        new CoinsAdminCommand(this);
         new StoreCommand(this);
     }
 
@@ -78,7 +83,7 @@ public final class BCPlugin extends JavaPlugin {
     }
 
     public String getCurrencyName() {
-        return ChatUtils.format(configYML.getString("settings.currency-name"));
+        return configYML.getString("settings.currency-name");
     }
 
     public String getType() {

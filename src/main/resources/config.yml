@@ -14,7 +14,11 @@ settings:
 
 messages:
   on-purchase:
-    success: "%prefix% You have purchased %product.display-name%! (%player.old-balance% -> %player.balance%)"
+    success: "%prefix% You have purchased %product.display-name%! &f(%player.old-balance% -> %player.balance%)"
   on-coins:
-    receive: ""
-    removal: ""
+    receive:
+      target: "%prefix% You have received %coins% %currency%!"
+      sender: "%prefix% You have added %coins% %currency% to %player%s' balance!"
+    removal:
+      target: "%prefix% %coins% %currency% have been removed from your balance!"
+      sender: "%prefix% You have removed %coins% %currency% from %player%s' balance!"

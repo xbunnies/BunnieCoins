@@ -18,7 +18,6 @@ public class PurchaseListener implements Listener {
         Product product = event.getProduct();
 
         player.sendMessage(ChatUtils.format("[*] You have purchased " + product.getDisplayName() + "!"));
-
         bcPlayer.processPurchase(product);
     }
 

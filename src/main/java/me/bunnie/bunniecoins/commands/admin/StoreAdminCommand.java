@@ -12,7 +12,7 @@ public class StoreAdminCommand extends Command {
     /storeadmin open - Open the server store
     /storeadmin history <player> - opens a menu if the admin clicks on a purchase they have an option to refund
     /storeadmin refund <player> <id> - Refund a players transaction
-    /storeadmin reload - Reloads the menu file
+    /storeadmin reload - Reloads config files
      */
 
     public StoreAdminCommand() {
