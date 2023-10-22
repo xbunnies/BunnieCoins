@@ -1,3 +1,20 @@
 settings:
+  store-open: true
   prefix: "&7&l[#c48ab8&lB#d9a3cb&lu#e7b3d8&ln#e7b3d8&ln#e78fc3&li#e759a3&le#e78fc3&lC#e7c5e3&lo#e7b3d8&li#e7b3d8&ln#c48ab8&ls&7&l]"
-  currency_name: "BunnieCoins"
+  currency-name: "BunnieCoins"
+  database:
+    type: SQLite #SQLite and MySQL are currently the only supported types.
+    mysql: #You only need to fill this if you set your type to MySQL.
+      username: root
+      password:
+      address: localhost
+      port: 3306
+      database: bunniecoins
+
+
+messages:
+  on-purchase:
+    success: "%prefix% You have purchased %product.display-name%! (%player.old-balance% -> %player.balance%)"
+  on-coins:
+    receive: ""
+    removal: ""

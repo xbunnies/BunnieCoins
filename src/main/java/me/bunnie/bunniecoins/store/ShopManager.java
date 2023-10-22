@@ -101,4 +101,17 @@ public class ShopManager {
         return category.getProducts().values().stream().toList();
     }
 
+    public Product findProductByName(String name) {
+        Product product = null;
+        for(Category category : categoryMap.values()) {
+            for(Product products : category.getProducts().values()) {
+                if(products.getName().equalsIgnoreCase(name)) {
+                    product = products;
+                    break;
+                }
+            }
+        }
+        return product;
+    }
+
 }

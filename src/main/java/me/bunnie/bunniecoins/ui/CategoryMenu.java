@@ -24,13 +24,13 @@ public class CategoryMenu extends Menu {
     private final BCPlugin plugin = BCPlugin.getInstance();
     private final BCPlayer bcPlayer;
     private final Category category;
-    private int size;
+    private final int size;
 
 
     public CategoryMenu(int size, Player player, Category category) {
         super(category.getDisplayName(), size, player);
         this.size = size;
-        this.bcPlayer = plugin.getBcManager().findBCPlayerByUUID(player.getUniqueId());
+        this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
         this.category = category;
     }
 

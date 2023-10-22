@@ -3,9 +3,7 @@ package me.bunnie.bunniecoins.ui.confirmation;
 import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.events.ProductPurchaseEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
-import me.bunnie.bunniecoins.store.category.Category;
 import me.bunnie.bunniecoins.store.category.product.Product;
-import me.bunnie.bunniecoins.ui.CategoryMenu;
 import me.bunnie.bunniecoins.ui.action.Action;
 import me.bunnie.bunniecoins.utils.ItemBuilder;
 import me.bunnie.bunniecoins.utils.ui.menu.Button;
@@ -14,21 +12,23 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PurchaseConfirmationMenu extends Menu {
 
     private final BCPlugin plugin = BCPlugin.getInstance();
     private final Product product;
     private final BCPlayer bcPlayer;
-    private int size;
+    private final int size;
 
     public PurchaseConfirmationMenu(int size, Player player, Product product) {
         super(product.getName(), size, player);
         this.size = size;
-        this.bcPlayer = plugin.getBcManager().findBCPlayerByUUID(player.getUniqueId());
+        this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
         this.product = product;
     }
 

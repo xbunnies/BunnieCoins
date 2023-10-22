@@ -2,8 +2,9 @@ package me.bunnie.bunniecoins;
 
 import lombok.Getter;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
+import me.bunnie.bunniecoins.database.SQLManager;
 import me.bunnie.bunniecoins.listeners.PlayerListener;
-import me.bunnie.bunniecoins.player.BCManager;
+import me.bunnie.bunniecoins.player.BCPlayerManager;
 import me.bunnie.bunniecoins.store.ShopManager;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.Config;
@@ -11,13 +12,15 @@ import me.bunnie.bunniecoins.utils.ui.listener.MenuListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public final class BCPlugin extends JavaPlugin {
 
     @Getter private static BCPlugin instance;
     @Getter private Config configYML, menusYML, productsYML;
+    @Getter private SQLManager sqlManager;
     @Getter private ShopManager shopManager;
-    @Getter private BCManager bcManager;
+    @Getter private BCPlayerManager bcPlayerManager;
 
     @Override
     public void onEnable() {
@@ -30,6 +33,14 @@ public final class BCPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        switch (getType()) {
+            case "mysql", "sqlite" -> {
+                sqlManager.disconnect();
+            }
+            default -> getLogger().log(Level.WARNING, "Unknown database type Player data will NOT save and will cause errors.");
+        }
+
         instance = null;
     }
 
@@ -41,11 +52,20 @@ public final class BCPlugin extends JavaPlugin {
 
     private void registerManagers() {
        shopManager = new ShopManager(this);
-       bcManager = new BCManager();
+       bcPlayerManager = new BCPlayerManager();
+
+       switch (getType()) {
+           case "mysql", "sqlite" -> {
+               sqlManager = new SQLManager(this);
+               getLogger().log(Level.INFO, "Using " + getType() + " as database! (SQLAdapter)");
+           }
+           default -> getLogger().log(Level.WARNING, "Unknown database type Player data will NOT save and will cause errors.");
+       }
+
     }
 
     private void registerListeners() {
-        Arrays.asList(new PlayerListener(), new MenuListener()
+        Arrays.asList(new PlayerListener(this), new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
@@ -58,7 +78,11 @@ public final class BCPlugin extends JavaPlugin {
     }
 
     public String getCurrencyName() {
-        return ChatUtils.format(configYML.getString("settings.currency_name"));
+        return ChatUtils.format(configYML.getString("settings.currency-name"));
+    }
+
+    public String getType() {
+        return configYML.getString("settings.database.type").toLowerCase();
     }
 
 }

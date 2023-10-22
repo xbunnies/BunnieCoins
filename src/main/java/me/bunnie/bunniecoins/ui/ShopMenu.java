@@ -25,12 +25,12 @@ public class ShopMenu extends Menu {
     private final BCPlugin plugin = BCPlugin.getInstance();
     private final BCPlayer bcPlayer;
     private final Config menusYML = plugin.getMenusYML();
-    private int size;
+    private final int size;
 
     public ShopMenu(String name, int size, Player player) {
         super(name, size, player);
         this.size = size;
-        bcPlayer = plugin.getBcManager().findBCPlayerByUUID(player.getUniqueId());
+        bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
     }
 
     @Override
