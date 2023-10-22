@@ -35,14 +35,14 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        BCPlayer bcPlayer = plugin.getBcManager().findBCPlayerByUUID(player.getUniqueId());
+        BCPlayer bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
         bcPlayer.save();
-        plugin.getBcManager().removeBCPlayerFromCache(bcPlayer);
+        plugin.getBcPlayerManager().removeBCPlayerFromCache(bcPlayer);
     }
 
     @EventHandler
     public void onServerReload(PluginDisableEvent event) {
-        List<BCPlayer> players = plugin.getBcManager().findAllBCPlayers();
+        List<BCPlayer> players = plugin.getBcPlayerManager().findAllBCPlayers();
         players.forEach(BCPlayer::save);
     }
 
