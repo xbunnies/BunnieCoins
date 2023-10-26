@@ -54,17 +54,16 @@ public class SQLManager {
         }
     }
 
-
     private void createTables() {
         List<String> tables = Arrays.asList(
                 "CREATE TABLE IF NOT EXISTS bc_players(" +
-                        "UUID VARCHAR, " +
+                        "UUID VARCHAR(36), " +
                         "COINS INTEGER, " +
                         "PRIMARY KEY(UUID)" +
                         ")",
                 "CREATE TABLE IF NOT EXISTS bc_purchases(" +
-                        "ID VARCHAR, " +
-                        "PLAYER_UUID VARCHAR, " +
+                        "ID VARCHAR(36), " +
+                        "PLAYER_UUID VARCHAR(36), " +
                         "PRODUCT TEXT, " +
                         "COST INTEGER, " +
                         "PURCHASE_TIMESTAMP LONG, " +

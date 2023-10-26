@@ -40,13 +40,13 @@ public class HistoryMenu extends PageMenu {
             @Override
             public ItemStack getItem(Player player) {
                 String name = plugin.getMenusYML().getString(path + ".name")
-                        .replace("%purchase.id%", purchase.getId())
                         .replace("%product.name%", purchase.getProduct().getDisplayName());
                 Material material = Material.valueOf(plugin.getMenusYML().getString(path + ".material")
                         .replace("%product.icon%", purchase.getProduct().getIcon().name()));
                 List<String> toReplace = plugin.getMenusYML().getStringList(path + ".lore");
                 ArrayList<String> lore = new ArrayList<>();
                 for (String s : toReplace) {
+                    s = s.replace("%purchase.id%", purchase.getId());
                     s = s.replace("%purchase.cost%", String.valueOf(purchase.getCost()));
                     s = s.replace("%purchase.date%", purchase.getFormattedDate());
                     s = s.replace("%purchase.refunded%", (purchase.isRefunded() ? "&aRefunded" : "&8&mRefunded"));

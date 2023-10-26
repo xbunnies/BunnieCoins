@@ -27,9 +27,9 @@ public class StoreAdminCommand extends Command {
         );
 
         this.subCommands = new ArrayList<>();
-        this.subCommands.add(new HistoryCommand(plugin));
         this.subCommands.add(new OpenCommand(plugin));
         this.subCommands.add(new CloseCommand(plugin));
+        this.subCommands.add(new HistoryCommand(plugin));
         this.subCommands.add(new ReloadCommand(plugin));
         this.subCommands.add(new HelpCommand(subCommands));
     }

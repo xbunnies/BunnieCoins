@@ -29,10 +29,11 @@ public class PurchaseListener implements Listener {
         int oldBalance = bcPlayer.getCoins(), newBalance = bcPlayer.getCoins() - product.getCost();
         player.sendMessage(ChatUtils.format(
                 plugin.getConfigYML().getString("messages.on-purchase.success")
+                        .replace("%prefix%", plugin.getPrefix())
                         .replace("%product.display-name%", product.getDisplayName())
                         .replace("%player.old-balance%", String.valueOf(oldBalance))
                         .replace("%player.balance%", String.valueOf(newBalance))
-                        .replace("%prefix%", plugin.getPrefix())
+
         ));
         for(String command : product.getCommands()) {
             command = command.replace("%player%", player.getName());
@@ -57,6 +58,7 @@ public class PurchaseListener implements Listener {
 
         player.sendMessage(ChatUtils.format(
                 plugin.getConfigYML().getString("messages.on-refund.success")
+                        .replace("%prefix%", plugin.getPrefix())
                         .replace("%product.display-name%", purchase.getProduct().getDisplayName())
                         .replace("%player%", op.getName())
         ));

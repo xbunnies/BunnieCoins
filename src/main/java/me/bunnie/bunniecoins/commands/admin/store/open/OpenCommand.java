@@ -20,7 +20,7 @@ public class OpenCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Open the server store store!";
+        return "Open the servers' store if closed!";
     }
 
     @Override

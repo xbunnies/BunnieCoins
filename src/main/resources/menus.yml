@@ -117,11 +117,12 @@ refund-confirmation:
       slot: [6,7,8,15,16,17,24,25,26]
       action: CANCEL
 purchase-history:
-  title: "&dPurchase History &f%player%"
+  title: "&dPurchase History Me&f%player%"
   buttons:
     purchase: #This is a static section meaning the name 'purchase' cannot be changed without the plugin causing major errors with this menu!
-      name: "%product.name% (%purchase.id%)"
+      name: "%product.name%"
       lore:
+        - "&7Purchase ID: &f%purchase.id%"
         - "&7Cost at purchase: &f%purchase.cost%"
         - "&7Date of purchase: &f%purchase.date%"
         - ""

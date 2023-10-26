@@ -81,11 +81,12 @@ public abstract class BCPlayer {
      * @param product The product being purchased.
      */
     public void processPurchase(Product product) {
-        Purchase purchase = new Purchase(UUID.randomUUID().toString().substring(1, 6), product);
+        Purchase purchase = new Purchase(UUID.randomUUID().toString(), product);
         this.purchases.add(purchase);
         coins = coins - product.getCost();
 
         createPurchase(purchase);
+        save();
     }
 
     /**
@@ -99,6 +100,7 @@ public abstract class BCPlayer {
         purchase.setRefunded(true);
 
         savePurchase(purchase);
+        save();
     }
 
     /**

@@ -20,7 +20,7 @@ public class CloseCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Close the server store store!";
+        return "Close the servers' store if opened!";
     }
 
     @Override
