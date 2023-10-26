@@ -77,7 +77,6 @@ public class SQLManager {
                 try {
                     Statement statement = connection.createStatement();
                     for(String s : tables) {
-                        plugin.getLogger().info(s);
                         statement.execute(s);
                     }
                     statement.close();
