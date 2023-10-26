@@ -10,37 +10,47 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
 public abstract class Menu {
 
     @Getter private static final Map<UUID, Menu> menuMap = new HashMap<>();
 
-    private final String name;
     private final int size;
     private final Player player;
     private Inventory inventory;
 
-    public Menu(String name, int size, Player player) {
-        this.name = name;
+    public Menu(int size, Player player) {
         this.size = size;
         this.player = player;
-
     }
+
+    public abstract String getTitle();
 
     public abstract Map<Integer, Button> getButtons();
 
-    private void createInventory() {
+    public void createInventory() {
         Map<Integer, Button> buttonMap = getButtons();
-        int inventorySize = size == -1 ? this.calculateSize() : size;
 
-        String title = name;
-        if(title == null) {
-            title = "No Title Provided!";
-        }
-        if(title.length() > 32) {
+        String title = getTitle();
+        if (title.length() > 32) {
             title = title.substring(0, 32);
         }
 
-        inventory = Bukkit.createInventory(player, inventorySize, ChatUtils.format(title));
+        inventory = Bukkit.createInventory(player, size, ChatUtils.format(title));
+        Menu previousMenu = menuMap.get(player.getUniqueId());
+
+        if (previousMenu == null) {
+            player.closeInventory();
+        } else {
+            int previousSize = player.getOpenInventory().getTopInventory().getSize();
+            String previousTitle = player.getOpenInventory().getTitle();
+
+            if (previousSize == size && previousTitle.equals(title)) {
+                inventory = player.getOpenInventory().getTopInventory();
+            } else {
+                player.closeInventory();
+            }
+        }
 
         for (Map.Entry<Integer, Button> buttonEntry : buttonMap.entrySet()) {
             inventory.setItem(buttonEntry.getKey(), buttonEntry.getValue().getItem(player));
@@ -49,30 +59,20 @@ public abstract class Menu {
         player.openInventory(inventory);
     }
 
+
     public void open() {
         this.createInventory();
         menuMap.put(player.getUniqueId(), this);
     }
 
 
-    public void onClose() {
+    public void close() {
         menuMap.remove(player.getUniqueId());
-    }
-
-    private int calculateSize() {
-        int highest = 0;
-
-        for (int buttonValue : getButtons().keySet()) {
-            if (buttonValue > highest) {
-                highest = buttonValue;
-            }
-        }
-
-        return (int) (Math.ceil((highest + 1) / 9D) * 9D);
     }
 
     public Inventory getInventory() {
         return inventory;
     }
+
 
 }

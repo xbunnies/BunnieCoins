@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class Button {
 
+
     public abstract ItemStack getItem(Player player);
 
     public void onButtonClick(Player player, int slot, ClickType clickType) {
@@ -16,4 +17,3 @@ public abstract class Button {
         player.getOpenInventory().getTopInventory().setContents(menu.getInventory().getContents());
     }
 }
-

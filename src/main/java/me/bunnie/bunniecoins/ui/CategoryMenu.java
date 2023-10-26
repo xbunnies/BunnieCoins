@@ -19,19 +19,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CategoryMenu extends Menu {
+public class CategoryMenu extends Menu{
 
-    private final BCPlugin plugin = BCPlugin.getInstance();
+    private final BCPlugin plugin;
     private final BCPlayer bcPlayer;
     private final Category category;
     private final int size;
 
 
     public CategoryMenu(int size, Player player, Category category) {
-        super(category.getDisplayName(), size, player);
+        super(size, player);
         this.size = size;
+        this.plugin = BCPlugin.getInstance();
         this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
         this.category = category;
+    }
+
+    @Override
+    public String getTitle() {
+        return category.getDisplayName();
     }
 
     @Override
@@ -80,7 +86,7 @@ public class CategoryMenu extends Menu {
                 int balance = bcPlayer.getCoins();
                 if(balance > cost || balance == cost) {
                     player.closeInventory();
-                    new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("confirmation.size"), player, product).open();
+                    new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("purchase-confirmation.size"), player, product).open();
                     return;
                 }
                 player.closeInventory();

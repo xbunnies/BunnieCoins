@@ -13,12 +13,24 @@ settings:
 
 
 messages:
+  on-store:
+    status:
+      open: "%prefix% #C78DD3Store has now been #CCE5EAopened#C78DD3!"
+      close: "%prefix% #C78DD3Store has now been #CCE5EAclosed#C78DD3!"
+    fail:
+      player-open: "&cStore is currently closed!"
+      open: "&cStore is already opened!"
+      close: "&cStore is already closed!"
   on-purchase:
-    success: "%prefix% You have purchased %product.display-name%! &f(%player.old-balance% -> %player.balance%)"
+    success: "%prefix% #C78DD3You have purchased&r %product.display-name%#C78DD3! &7(#CCE5EA%player.old-balance% -> %player.balance%&7)"
+  on-refund:
+    success: "%prefix% #C78DD3Refund has been issued for #CCE5EA%player%#C78DD3!"
   on-coins:
     receive:
-      target: "%prefix% You have received %coins% %currency%!"
-      sender: "%prefix% You have added %coins% %currency% to %player%s' balance!"
+      target: "%prefix% #C78DD3You have received #CCE5EA%coins% %currency%#C78DD3!"
+      sender: "%prefix% #C78DD3You have added #CCE5EA%coins% %currency% to #CCE5EA%player%s' #C78DD3balance!"
     removal:
-      target: "%prefix% %coins% %currency% have been removed from your balance!"
-      sender: "%prefix% You have removed %coins% %currency% from %player%s' balance!"
+      target: "%prefix% #CCE5EA%coins% %currency% #C78DD3have been removed from your balance!"
+      sender: "%prefix% #C78DD3You have removed #CCE5EA%coins% %currency% from #CCE5EA%player%s' #C78DD3balance!"
+  on-history:
+    load: "%prefix% #C78DD3Loading player #CCE5EA%player%s' #C78DD3purchase history!"

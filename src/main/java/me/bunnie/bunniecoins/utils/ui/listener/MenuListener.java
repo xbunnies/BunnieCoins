@@ -56,7 +56,7 @@ public class MenuListener implements Listener {
             return;
         }
 
-        menu.onClose();
+        menu.close();
         Menu.getMenuMap().remove(player.getUniqueId());
     }
 
@@ -68,8 +68,7 @@ public class MenuListener implements Listener {
         if (menu == null) {
             return;
         }
-
-        menu.onClose();
+        menu.close();
         Menu.getMenuMap().remove(player.getUniqueId());
     }
 }

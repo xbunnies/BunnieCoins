@@ -1,4 +1,6 @@
 name: BunnieCoins
 version: '${project.version}'
 main: me.bunnie.bunniecoins.BCPlugin
+description: Adds a premium currency to your server
+author: xbunnies
 api-version: '1.20'

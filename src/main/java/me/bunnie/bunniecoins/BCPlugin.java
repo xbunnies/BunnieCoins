@@ -1,7 +1,8 @@
 package me.bunnie.bunniecoins;
 
 import lombok.Getter;
-import me.bunnie.bunniecoins.commands.admin.CoinsAdminCommand;
+import me.bunnie.bunniecoins.commands.admin.coins.CoinsAdminCommand;
+import me.bunnie.bunniecoins.commands.admin.store.StoreAdminCommand;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
 import me.bunnie.bunniecoins.database.SQLManager;
 import me.bunnie.bunniecoins.listeners.CoinsListener;
@@ -36,11 +37,8 @@ public final class BCPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         switch (getType()) {
-            case "mysql", "sqlite" -> {
-                sqlManager.disconnect();
-            }
+            case "mysql", "sqlite" -> sqlManager.disconnect();
             default -> getLogger().log(Level.WARNING, "Unknown database type Player data will NOT save and will cause errors.");
         }
 
@@ -62,19 +60,20 @@ public final class BCPlugin extends JavaPlugin {
                sqlManager = new SQLManager(this);
                getLogger().log(Level.INFO, "Using " + getType() + " as database! (SQLAdapter)");
            }
-           default -> getLogger().log(Level.WARNING, "Unknown database type Player data will NOT save and will cause errors.");
+           default -> getLogger().log(Level.WARNING, "Unknown database type Player and Purchase data will NOT save and will cause errors.");
        }
 
     }
 
     private void registerListeners() {
         Arrays.asList(new PlayerListener(this), new CoinsListener(this),
-                new PurchaseListener(), new MenuListener()
+                new PurchaseListener(this), new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void registerCommands() {
         new CoinsAdminCommand(this);
+        new StoreAdminCommand(this);
         new StoreCommand(this);
     }
 
@@ -88,6 +87,15 @@ public final class BCPlugin extends JavaPlugin {
 
     public String getType() {
         return configYML.getString("settings.database.type").toLowerCase();
+    }
+
+    public boolean isStoreOpen() {
+        return configYML.getBoolean("settings.store-open");
+    }
+
+    public void setStoreStatus(boolean status) {
+        configYML.set("settings.store-open", status);
+        configYML.save();
     }
 
 }

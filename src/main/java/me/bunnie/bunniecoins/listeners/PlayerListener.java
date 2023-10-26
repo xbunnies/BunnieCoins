@@ -1,7 +1,6 @@
 package me.bunnie.bunniecoins.listeners;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.CoinsAddEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
 import me.bunnie.bunniecoins.player.adapters.BCPlayerSQLAdapter;
 import org.bukkit.Bukkit;
@@ -9,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;

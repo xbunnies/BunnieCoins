@@ -1,11 +1,13 @@
 products:
-  serpah:
+  seraph:
     name: "Seraph"
     category: "rank"
     lore:
       - ""
     material: EMERALD
-    slot: 4
+    slot: 0
     price: 1500
-    commands:
-      - ""
+    purchase-commands:
+      - "say %player% has purchased Seraph rank!"
+    refund-commands:
+      - "say %player% has refunded their Seraph rank!"

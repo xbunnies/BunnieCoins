@@ -1,8 +1,9 @@
 package me.bunnie.bunniecoins.ui.confirmation;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.ProductPurchaseEvent;
+import me.bunnie.bunniecoins.events.ProductRefundEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
+import me.bunnie.bunniecoins.player.purchase.Purchase;
 import me.bunnie.bunniecoins.store.category.product.Product;
 import me.bunnie.bunniecoins.ui.action.Action;
 import me.bunnie.bunniecoins.utils.ItemBuilder;
@@ -18,19 +19,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PurchaseConfirmationMenu extends Menu {
+public class RefundConfirmationMenu extends Menu {
 
     private final BCPlugin plugin;
+    private final Purchase purchase;
     private final Product product;
     private final BCPlayer bcPlayer;
     private final int size;
 
-    public PurchaseConfirmationMenu(int size, Player player, Product product) {
+    public RefundConfirmationMenu(int size, Player player, BCPlayer bcPlayer, Purchase purchase) {
         super(size, player);
         this.plugin = BCPlugin.getInstance();
         this.size = size;
-        this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
-        this.product = product;
+        this.bcPlayer = bcPlayer;
+        this.purchase = purchase;
+        this.product = purchase.getProduct();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class PurchaseConfirmationMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
-        String path = "purchase-confirmation.buttons";
+        String path = "refund-confirmation.buttons";
         for (String s : plugin.getMenusYML().getConfigurationSection(path).getKeys(false)) {
             if (plugin.getMenusYML().isInt(path + "." + s + ".slot")) {
                 int slot = plugin.getMenusYML().getInt(path + "." + s + ".slot");
@@ -69,11 +72,11 @@ public class PurchaseConfirmationMenu extends Menu {
                 }
             }
         }
-
         return buttons;
     }
+
     private Button getButton(String s) {
-        String path = "purchase-confirmation.buttons";
+        String path = "refund-confirmation.buttons";
         return new Button() {
             @Override
             public ItemStack getItem(Player player) {
@@ -85,6 +88,7 @@ public class PurchaseConfirmationMenu extends Menu {
                 ArrayList<String> lore = new ArrayList<>();
                 for (String s : toReplace) {
                     s = s.replace("%product.cost%", String.valueOf(product.getCost()));
+                    s = s.replace("%purchase.date%", purchase.getFormattedDate());
                     if (s.contains("%product.lore%")) {
                         lore.addAll(product.getDescription());
                     }
@@ -106,11 +110,13 @@ public class PurchaseConfirmationMenu extends Menu {
                 Action action = Action.valueOf(plugin.getMenusYML().getString(path + "." + s + ".action"));
 
                 switch (action) {
-                    case CLOSE_MENU -> player.closeInventory();
-                    case CANCEL -> player.closeInventory();
+                    case CLOSE_MENU, CANCEL -> {
+                        player.closeInventory();
+                        bcPlayer.getPurchases().clear();
+                    }
                     case CONFIRM -> {
                         player.closeInventory();
-                        plugin.getServer().getPluginManager().callEvent(new ProductPurchaseEvent(player, bcPlayer, product));
+                        plugin.getServer().getPluginManager().callEvent(new ProductRefundEvent(player, bcPlayer, purchase));
                     }
                 }
             }

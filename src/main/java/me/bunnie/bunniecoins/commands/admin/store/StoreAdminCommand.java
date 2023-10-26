@@ -1,9 +1,11 @@
-package me.bunnie.bunniecoins.commands.admin;
+package me.bunnie.bunniecoins.commands.admin.store;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.commands.admin.coins.add.AddCommand;
-import me.bunnie.bunniecoins.commands.admin.coins.help.HelpCommand;
-import me.bunnie.bunniecoins.commands.admin.coins.remove.RemoveCommand;
+import me.bunnie.bunniecoins.commands.admin.store.close.CloseCommand;
+import me.bunnie.bunniecoins.commands.admin.store.help.HelpCommand;
+import me.bunnie.bunniecoins.commands.admin.store.history.HistoryCommand;
+import me.bunnie.bunniecoins.commands.admin.store.open.OpenCommand;
+import me.bunnie.bunniecoins.commands.admin.store.reload.ReloadCommand;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.command.Command;
 import me.bunnie.bunniecoins.utils.command.SubCommand;
@@ -12,28 +14,23 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoinsAdminCommand extends Command {
+public class StoreAdminCommand extends Command {
 
-    /*
-    /coinsadmin add <player> <coins> - Closes the server store
-    /coinsadmin remove <player> <coins> - Open the server store
-     */
-
-    private final BCPlugin plugin;
     private final List<SubCommand> subCommands;
 
-    public CoinsAdminCommand(BCPlugin plugin) {
+    public StoreAdminCommand(BCPlugin plugin) {
         super(
-                "coinsadmin",
+                "storeadmin",
                 new String[]{},
-                "Command to manage players coins",
-                "bunniecoins.commands.coinsadmin"
+                "Command to manage servers BunnieCoins store",
+                "bunniecoins.commands.storeadmin"
         );
 
-        this.plugin = plugin;
         this.subCommands = new ArrayList<>();
-        this.subCommands.add(new AddCommand(plugin));
-        this.subCommands.add(new RemoveCommand(plugin));
+        this.subCommands.add(new HistoryCommand(plugin));
+        this.subCommands.add(new OpenCommand(plugin));
+        this.subCommands.add(new CloseCommand(plugin));
+        this.subCommands.add(new ReloadCommand(plugin));
         this.subCommands.add(new HelpCommand(subCommands));
     }
 
@@ -64,3 +61,4 @@ public class CoinsAdminCommand extends Command {
         return null;
     }
 }
+

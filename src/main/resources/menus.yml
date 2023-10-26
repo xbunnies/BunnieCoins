@@ -14,6 +14,7 @@ store:
         - "#FF9FAE%currency% can be obtained by purchasing at our webstore"
         - ""
         - "#FF9FAEYour %currency%: #F4F4F4%player.balance%"
+      enchanted: false
       slot: 13
       material: NETHER_STAR
       action: {}
@@ -24,7 +25,8 @@ store:
         - "#F9C7CDRanks are global and lifetime packages that"
         - "#F9C7CDgive you perks and buffs to enhance your experience!"
         - ""
-        - "#F9C7CDContains: #F4F4F4%ranks.packages% Packages"
+        - "#F9C7CDContains: #F4F4F4%rank.packages% Packages"
+      enchanted: false
       material: DIAMOND_HELMET
       slot: 21
       action: OPEN_CATEGORY_MENU
@@ -35,8 +37,10 @@ store:
         - "#F9C7CDon the server!"
         - ""
         - "#F9C7CDContains: #F4F4F4%keys.packages% Packages"
+      enchanted: false
       material: TRIPWIRE_HOOK
       slot: 22
+      action: OPEN_CATEGORY_MENU
     misc:
       name: "#F9C7CDMiscellaneous"
       lore:
@@ -44,10 +48,11 @@ store:
         - "#F9C7CDthat will help your way to the top!"
         - ""
         - "#F9C7CDContains: #F4F4F4%misc.packages% Packages"
+      enchanted: false
       material: HOPPER
       slot: 23
-
-confirmation:
+      action: OPEN_CATEGORY_MENU
+purchase-confirmation:
   title: "&nConfirm Purchase"
   size: 27
   filler:
@@ -58,9 +63,10 @@ confirmation:
       name: "&aConfirm"
       lore:
         - "&8Click to proceed with this purchase!"
+      enchanted: false
       material: LIME_WOOL
       slot: [0,1,2,9,10,11,18,19,20]
-      action: "CONFIRM"
+      action: CONFIRM
     item:
       name: "%product.name%"
       lore:
@@ -76,9 +82,54 @@ confirmation:
       name: "&cCancel"
       lore:
         - "&8Click to cancel this purchase!"
+      enchanted: false
       material: RED_WOOL
       slot: [6,7,8,15,16,17,24,25,26]
-      action: "CANCEL"
+      action: CANCEL
+refund-confirmation:
+  title: "&nConfirm Refund"
+  size: 27
+  filler:
+    enabled: true
+    material: PINK_STAINED_GLASS_PANE
+  buttons:
+    confirm:
+      name: "&aConfirm"
+      lore:
+        - "&8Click to proceed with this refund!"
+      material: LIME_WOOL
+      slot: [0,1,2,9,10,11,18,19,20]
+      action: CONFIRM
+    item:
+      name: "%product.name%"
+      lore:
+        - "&7Refund Cost: &f%product.cost%"
+        - "&7Date Purchased: %purchase.date%"
+      enchanted: false
+      material: "%product.icon%"
+      slot: 13
+      action: {}
+    cancel:
+      name: "&cCancel"
+      lore:
+        - "&8Click to cancel this refund!"
+      material: RED_WOOL
+      slot: [6,7,8,15,16,17,24,25,26]
+      action: CANCEL
+purchase-history:
+  title: "&dPurchase History &f%player%"
+  buttons:
+    purchase: #This is a static section meaning the name 'purchase' cannot be changed without the plugin causing major errors with this menu!
+      name: "%product.name% (%purchase.id%)"
+      lore:
+        - "&7Cost at purchase: &f%purchase.cost%"
+        - "&7Date of purchase: &f%purchase.date%"
+        - ""
+        - "&7Refund Status: &f%purchase.refunded%"
+        - ""
+        - "&7- &aCLICK TO REFUND &7-"
+      enchanted: false
+      material: "%product.icon%"
 
 insufficient-funds:
   text: "&c&lInsufficient Coins\n \n&0You need more coins to buy %product.name% %category.name%!\n \n\

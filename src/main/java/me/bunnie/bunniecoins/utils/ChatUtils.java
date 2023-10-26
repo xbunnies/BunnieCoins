@@ -46,20 +46,4 @@ public class ChatUtils {
         }
         return sb.toString().trim();
     }
-
-
-    public static TextComponent getHoverableText(String message, String toHover) {
-        TextComponent playerName = new TextComponent(format(message));
-        BaseComponent[] hoverText = new BaseComponent[]{new TextComponent(format(toHover))};
-        playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
-        return playerName;
-    }
-
-    public static List<BaseComponent> getHoverableListText(String message, String toHover) {
-        TextComponent text = new TextComponent(format(message));
-        TextComponent hoverText = new TextComponent(format(toHover));
-        hoverText.setColor(ChatColor.GRAY);
-        text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {hoverText}));
-        return Arrays.asList(text);
-    }
 }

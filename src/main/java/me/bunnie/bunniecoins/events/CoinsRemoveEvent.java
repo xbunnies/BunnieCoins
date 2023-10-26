@@ -1,7 +1,6 @@
 package me.bunnie.bunniecoins.events;
 
 import lombok.Getter;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

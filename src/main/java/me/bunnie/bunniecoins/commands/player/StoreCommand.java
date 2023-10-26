@@ -16,7 +16,7 @@ public class StoreCommand extends Command {
     public StoreCommand(BCPlugin plugin) {
         super(
                 "store",
-                new String[]{},
+                new String[]{"bcstore"},
                 "Access the servers in-game premium currency store"
         );
         this.plugin = plugin;
@@ -25,14 +25,18 @@ public class StoreCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if(sender instanceof Player player) {
+            if(!plugin.isStoreOpen()) {
+                player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-store.fail.player-open")
+                        .replace("%prefix%", plugin.getPrefix())
+                ));
+                return;
+            }
             if(!plugin.getMenusYML().contains("store.title")) {
                 player.sendMessage(ChatUtils.format("&cUnable to process request to open up the ShopMenu. store.title has returned null!"));
                 return;
             }
-            String title = plugin.getMenusYML().getString("store.title")
-                    .replace("%currency%", plugin.getCurrencyName());
             int size = plugin.getMenusYML().getInt("store.size");
-            new ShopMenu(title, size, player).open();
+            new ShopMenu(size, player).open();
             return;
         }
         sender.sendMessage("Only players may execute this command!");

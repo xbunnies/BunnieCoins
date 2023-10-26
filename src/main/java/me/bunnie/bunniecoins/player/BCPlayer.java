@@ -1,7 +1,6 @@
 package me.bunnie.bunniecoins.player;
 
 import lombok.Data;
-import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.player.purchase.Purchase;
 import me.bunnie.bunniecoins.store.category.product.Product;
 
@@ -34,6 +33,7 @@ public abstract class BCPlayer {
         this.purchases = new ArrayList<>();
 
         this.load();
+
     }
 
     /**
@@ -122,5 +122,22 @@ public abstract class BCPlayer {
      */
     public int getTotalPurchases() {
         return purchases.size();
+    }
+
+    /**
+     * Sorts the Purchases by their timestamps by Newest -> Oldest
+     *
+     * @return Sorted List.
+     */
+    public List<Purchase> getSortedPurchases() {
+        List<Purchase> sortedPurchases = new ArrayList<>(purchases);
+
+        sortedPurchases.sort((purchase1, purchase2) -> {
+            long date1 = purchase1.getPurchasedAt();
+            long date2 = purchase2.getPurchasedAt();
+
+            return Long.compare(date2, date1);
+        });
+        return sortedPurchases;
     }
 }

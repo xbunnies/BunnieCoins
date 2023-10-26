@@ -8,6 +8,7 @@ import me.bunnie.bunniecoins.utils.Config;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,8 @@ public class ShopManager {
                     String displayName = productsYML.getString("products." + s  +".name");
                     String categoryName = productsYML.getString("products." + s + ".category");
                     List<String> description = productsYML.getStringList("products." + s + ".lore");
-                    List<String> commands = productsYML.getStringList("products." + s + ".commands");
+                    List<String> commands = productsYML.getStringList("products." + s + ".purchase-commands");
+                    List<String> refundCommands = productsYML.getStringList("products." + s + ".refund-commands");
                     Material material = Material.valueOf(productsYML.getString("products." + s + ".material"));
                     int price = productsYML.getInt("products." + s + ".price");
                     int menuSlot = productsYML.getInt("products." + s + ".slot");
@@ -69,6 +71,7 @@ public class ShopManager {
                     product.setDisplayName(displayName);
                     product.setDescription(description);
                     product.setCommands(commands);
+                    product.setRefundCommands(refundCommands);
                     product.setIcon(material);
                     product.setCost(price);
                     product.setMenuSlot(menuSlot);
@@ -99,6 +102,13 @@ public class ShopManager {
 
     public List<Product> findProductsByCategory(Category category) {
         return category.getProducts().values().stream().toList();
+    }
+    public List<Product> findAllProducts() {
+        List<Product> toReturn = new ArrayList<>();
+        for(Category category : findAllCategories()) {
+            toReturn.addAll(category.getProducts().values());
+        }
+        return toReturn;
     }
 
     public Product findProductByName(String name) {

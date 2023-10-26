@@ -22,15 +22,23 @@ import java.util.Map;
 
 public class ShopMenu extends Menu {
 
-    private final BCPlugin plugin = BCPlugin.getInstance();
+    private final BCPlugin plugin;
     private final BCPlayer bcPlayer;
-    private final Config menusYML = plugin.getMenusYML();
+    private final Config menusYML;
     private final int size;
 
-    public ShopMenu(String name, int size, Player player) {
-        super(name, size, player);
+    public ShopMenu(int size, Player player) {
+        super(size, player);
+        this.plugin = BCPlugin.getInstance();
+        this.menusYML = plugin.getMenusYML();
         this.size = size;
         bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
+    }
+
+    @Override
+    public String getTitle() {
+        return plugin.getMenusYML().getString("store.title")
+                .replace("%currency%", plugin.getCurrencyName());
     }
 
     @Override
@@ -56,6 +64,7 @@ public class ShopMenu extends Menu {
                     return new ItemBuilder(material)
                             .setName(name)
                             .setLore(lore)
+                            .setGlow(menusYML.getBoolean(path + "." + s + ".enchanted"))
                             .build();
                 }
             });
@@ -101,6 +110,7 @@ public class ShopMenu extends Menu {
                         .setLore(toLore)
                         .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
                         .addItemFlag(ItemFlag.HIDE_POTION_EFFECTS)
+                        .setGlow(menusYML.getBoolean("store.categories." + category.getName().toLowerCase() + ".enchanted"))
                         .build();
             }
 

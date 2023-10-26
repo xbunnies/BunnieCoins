@@ -105,17 +105,16 @@ public class BCPlayerSQLAdapter extends BCPlayer {
             @Override
             public void run() {
                 Connection connection = BCPlugin.getInstance().getSqlManager().getConnection();
-                String query = "SELECT * FROM bc_purchases WHERE UUID='" + getUuid().toString() + "'";
+                String query = "SELECT * FROM bc_purchases WHERE PLAYER_UUID='" + getUuid().toString() + "'";
                 try {
                     Statement statement = connection.createStatement();
                     ResultSet rs = statement.executeQuery(query);
-                    if(!rs.next()) return;
-
-                    while(rs.next()) {
+                    while (rs.next()) {
                         Purchase purchase = new Purchase(rs.getString("ID"), BCPlugin.getInstance().getShopManager().findProductByName(rs.getString("product")));
                         purchase.setCost(rs.getInt("COST"));
                         purchase.setPurchasedAt(rs.getLong("PURCHASE_TIMESTAMP"));
                         purchase.setRefunded(rs.getBoolean("REFUNDED"));
+                        if (getPurchases().contains(purchase)) continue;
                         getPurchases().add(purchase);
                     }
                 } catch (SQLException e) {
@@ -124,6 +123,7 @@ public class BCPlayerSQLAdapter extends BCPlayer {
             }
         }.runTaskAsynchronously(BCPlugin.getInstance());
     }
+
 
     @Override
     public void savePurchase(Purchase purchase) {
@@ -136,6 +136,7 @@ public class BCPlayerSQLAdapter extends BCPlayer {
                     PreparedStatement ps = connection.prepareStatement(query);
                     ps.setBoolean(1, purchase.isRefunded());
                     ps.setString(2, purchase.getId());
+                    ps.executeUpdate();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -143,13 +144,4 @@ public class BCPlayerSQLAdapter extends BCPlayer {
         }.runTaskAsynchronously(BCPlugin.getInstance());
     }
 
-    @Override
-    public void setCoins(int coins) {
-        super.setCoins(coins);
-    }
-
-    @Override
-    public int getCoins() {
-        return super.getCoins();
-    }
 }

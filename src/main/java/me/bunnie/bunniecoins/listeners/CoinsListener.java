@@ -4,15 +4,11 @@ import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.events.CoinsAddEvent;
 import me.bunnie.bunniecoins.events.CoinsRemoveEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
-import me.bunnie.bunniecoins.player.adapters.BCPlayerSQLAdapter;
 import me.bunnie.bunniecoins.utils.ChatUtils;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import java.util.logging.Level;
 
 public class CoinsListener implements Listener {
 
