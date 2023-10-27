@@ -3,7 +3,7 @@ products:
     name: "Seraph"
     category: "rank"
     lore:
-      - ""
+      - "&aExample Product"
     material: EMERALD
     slot: 0
     price: 1500

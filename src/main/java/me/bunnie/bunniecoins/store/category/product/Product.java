@@ -23,6 +23,7 @@ public class Product {
         this.displayName = ChatColor.GRAY + name;
         this.description = new ArrayList<>();
         this.commands = new ArrayList<>();
+        this.refundCommands = new ArrayList<>();
         this.icon = Material.BOOK;
         this.cost = 500;
         this.menuSlot = 0;

@@ -1,6 +1,7 @@
 package me.bunnie.bunniecoins.player;
 
 import lombok.Data;
+import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.player.purchase.Purchase;
 import me.bunnie.bunniecoins.store.category.product.Product;
 
@@ -33,7 +34,7 @@ public abstract class BCPlayer {
         this.purchases = new ArrayList<>();
 
         this.load();
-
+        BCPlugin.getInstance().getBcPlayerManager().addBCPlayerToCache(this);
     }
 
     /**

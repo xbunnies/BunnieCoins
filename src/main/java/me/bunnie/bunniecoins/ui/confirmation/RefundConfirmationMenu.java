@@ -38,7 +38,7 @@ public class RefundConfirmationMenu extends Menu {
 
     @Override
     public String getTitle() {
-        return "Purchase Confirmation";
+        return plugin.getMenusYML().getString("refund-confirmation.title");
     }
 
     @Override

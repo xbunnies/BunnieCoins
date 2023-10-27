@@ -5,12 +5,14 @@ settings:
   database:
     type: SQLite #SQLite and MySQL are currently the only supported types.
     mysql: #You only need to fill this if you set your type to MySQL.
-      username: root
-      password:
-      address: localhost
-      port: 3306
-      database: bunniecoins
-
+    mongo:
+      address: 127.0.0.1
+      port: 27017
+      auth:
+        enabled: false
+        username: Username
+        password: Password
+        database: admin #Database where the user is located
 
 messages:
   on-store:

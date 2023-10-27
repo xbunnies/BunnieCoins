@@ -12,7 +12,6 @@ public class BCPlayerSQLAdapter extends BCPlayer {
 
     public BCPlayerSQLAdapter(UUID uuid) {
         super(uuid);
-        BCPlugin.getInstance().getBcPlayerManager().addBCPlayerToCache(this);
     }
 
     @Override

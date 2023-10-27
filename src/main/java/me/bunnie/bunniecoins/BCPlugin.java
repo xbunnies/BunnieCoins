@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.bunnie.bunniecoins.commands.admin.coins.CoinsAdminCommand;
 import me.bunnie.bunniecoins.commands.admin.store.StoreAdminCommand;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
+import me.bunnie.bunniecoins.database.MongoManager;
 import me.bunnie.bunniecoins.database.SQLManager;
 import me.bunnie.bunniecoins.listeners.CoinsListener;
 import me.bunnie.bunniecoins.listeners.PlayerListener;
@@ -23,6 +24,7 @@ public final class BCPlugin extends JavaPlugin {
     @Getter private static BCPlugin instance;
     @Getter private Config configYML, menusYML, productsYML;
     @Getter private SQLManager sqlManager;
+    @Getter private MongoManager mongoManager;
     @Getter private ShopManager shopManager;
     @Getter private BCPlayerManager bcPlayerManager;
 
@@ -60,6 +62,12 @@ public final class BCPlugin extends JavaPlugin {
                sqlManager = new SQLManager(this);
                getLogger().log(Level.INFO, "Using " + getType() + " as database! (SQLAdapter)");
            }
+
+           case "mongo", "mongodb" -> {
+               mongoManager = new MongoManager(this);
+               getLogger().log(Level.INFO, "Using " + getType() + " as database! (MongoAdapter)");
+           }
+
            default -> getLogger().log(Level.WARNING, "Unknown database type Player and Purchase data will NOT save and will cause errors.");
        }
 

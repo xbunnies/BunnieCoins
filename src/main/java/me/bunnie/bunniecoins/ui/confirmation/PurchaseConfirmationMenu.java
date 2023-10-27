@@ -35,7 +35,7 @@ public class PurchaseConfirmationMenu extends Menu {
 
     @Override
     public String getTitle() {
-        return "Purchase Confirmation";
+        return plugin.getMenusYML().getString("purchase-confirmation.title");
     }
 
     @Override

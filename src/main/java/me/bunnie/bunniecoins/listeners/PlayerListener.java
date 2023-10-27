@@ -2,6 +2,7 @@ package me.bunnie.bunniecoins.listeners;
 
 import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.player.BCPlayer;
+import me.bunnie.bunniecoins.player.adapters.BCPlayerMongoAdapter;
 import me.bunnie.bunniecoins.player.adapters.BCPlayerSQLAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -28,6 +29,7 @@ public class PlayerListener implements Listener {
     public void onLogin(AsyncPlayerPreLoginEvent event) {
         switch (plugin.getType()) {
             case "mysql", "sqlite" -> new BCPlayerSQLAdapter(event.getUniqueId());
+            case "mongo", "mongodb" -> new BCPlayerMongoAdapter(event.getUniqueId());
             default -> plugin.getLogger().log(Level.WARNING,
                     "Player creation has been attempted with an invalid database type!");
         }
