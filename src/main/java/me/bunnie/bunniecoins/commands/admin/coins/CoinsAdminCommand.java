@@ -7,9 +7,13 @@ import me.bunnie.bunniecoins.commands.admin.coins.remove.RemoveCommand;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.command.Command;
 import me.bunnie.bunniecoins.utils.command.SubCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CoinsAdminCommand extends Command {
@@ -54,6 +58,28 @@ public class CoinsAdminCommand extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return null;
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            List<String> options = new ArrayList<>();
+            for (SubCommand command : subCommands) {
+                options.add(command.getName());
+            }
+            String argument = args[0];
+            StringUtil.copyPartialMatches(argument, options, completions);
+            Collections.sort(completions);
+        }
+
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")) {
+                List<String> options = new ArrayList<>();
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    options.add(player.getName());
+                }
+                String argument = args[1];
+                StringUtil.copyPartialMatches(argument, options, completions);
+                Collections.sort(completions);
+            }
+        }
+        return completions;
     }
 }
