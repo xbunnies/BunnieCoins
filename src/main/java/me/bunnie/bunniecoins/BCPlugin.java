@@ -3,9 +3,11 @@ package me.bunnie.bunniecoins;
 import lombok.Getter;
 import me.bunnie.bunniecoins.commands.admin.coins.CoinsAdminCommand;
 import me.bunnie.bunniecoins.commands.admin.store.StoreAdminCommand;
+import me.bunnie.bunniecoins.commands.player.CoinsCommand;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
 import me.bunnie.bunniecoins.database.MongoManager;
 import me.bunnie.bunniecoins.database.SQLManager;
+import me.bunnie.bunniecoins.hook.PAPIHook;
 import me.bunnie.bunniecoins.listeners.CoinsListener;
 import me.bunnie.bunniecoins.listeners.PlayerListener;
 import me.bunnie.bunniecoins.listeners.PurchaseListener;
@@ -14,6 +16,7 @@ import me.bunnie.bunniecoins.store.ShopManager;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.Config;
 import me.bunnie.bunniecoins.utils.ui.listener.MenuListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -35,15 +38,17 @@ public final class BCPlugin extends JavaPlugin {
         this.registerManagers();
         this.registerListeners();
         this.registerCommands();
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PAPIHook(this).register();
+        }
     }
 
     @Override
     public void onDisable() {
         switch (getType()) {
             case "mysql", "sqlite" -> sqlManager.disconnect();
-            default -> getLogger().log(Level.WARNING, "Unknown database type Player data will NOT save and will cause errors.");
         }
-
         instance = null;
     }
 
@@ -80,6 +85,7 @@ public final class BCPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
+        new CoinsCommand(this);
         new CoinsAdminCommand(this);
         new StoreAdminCommand(this);
         new StoreCommand(this);

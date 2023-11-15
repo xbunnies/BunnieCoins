@@ -4,5 +4,6 @@ main: me.bunnie.bunniecoins.BCPlugin
 description: Adds a premium currency to your server
 author: xbunnies
 api-version: '1.20'
+softdepend: [PlaceholderAPI]
 libraries:
   - org.mongodb:mongo-java-driver:3.12.11

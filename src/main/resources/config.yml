@@ -3,9 +3,14 @@ settings:
   prefix: "&7&l[#c48ab8&lB#d9a3cb&lu#e7b3d8&ln#e7b3d8&ln#e78fc3&li#e759a3&le#e78fc3&lC#e7c5e3&lo#e7b3d8&li#e7b3d8&ln#c48ab8&ls&7&l]"
   currency-name: "BunnieCoins"
   database:
-    type: SQLite #SQLite and MySQL are currently the only supported types.
+    type: SQLite #MongoDB, SQLite and MySQL are currently supported!
     mysql: #You only need to fill this if you set your type to MySQL.
-    mongo:
+      address: 127.0.0.1
+      port: 3306
+      username: Username
+      password: Password
+      database: bunniecoins
+    mongo: #You only need to fill this if you set your type to MongoDB.
       address: 127.0.0.1
       port: 27017
       auth:
@@ -28,6 +33,7 @@ messages:
   on-refund:
     success: "%prefix% #C78DD3Refund has been issued for #CCE5EA%player%#C78DD3!"
   on-coins:
+    balance: "%prefix% #C78DD3You have #CCE5EA%player.coins% %currency%#C78DD3!"
     receive:
       target: "%prefix% #C78DD3You have received #CCE5EA%coins% %currency%#C78DD3!"
       sender: "%prefix% #C78DD3You have added #CCE5EA%coins% %currency% to #CCE5EA%player%s' #C78DD3balance!"

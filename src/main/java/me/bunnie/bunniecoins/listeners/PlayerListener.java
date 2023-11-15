@@ -5,11 +5,13 @@ import me.bunnie.bunniecoins.player.BCPlayer;
 import me.bunnie.bunniecoins.player.adapters.BCPlayerMongoAdapter;
 import me.bunnie.bunniecoins.player.adapters.BCPlayerSQLAdapter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -40,7 +42,7 @@ public class PlayerListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         BCPlayer bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
-        if(bcPlayer != null) {
+        if (bcPlayer != null) {
             bcPlayer.save();
             plugin.getBcPlayerManager().removeBCPlayerFromCache(bcPlayer);
         }
@@ -51,6 +53,7 @@ public class PlayerListener implements Listener {
         for(Player player : Bukkit.getOnlinePlayers()) {
             switch (plugin.getType()) {
                 case "mysql", "sqlite" -> new BCPlayerSQLAdapter(player.getUniqueId());
+                case "mongo", "mongodb" -> new BCPlayerMongoAdapter(player.getUniqueId());
                 default -> plugin.getLogger().log(Level.WARNING,
                         "Player creation has been attempted with an invalid database type!");
             }
