@@ -1,7 +1,7 @@
 package me.bunnie.bunniecoins.commands.admin.coins.remove;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.CoinsRemoveEvent;
+import me.bunnie.bunniecoins.events.coins.CoinsRemoveEvent;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.command.SubCommand;
 import org.bukkit.Bukkit;
@@ -45,6 +45,10 @@ public class RemoveCommand extends SubCommand {
         }
         String playerName = args[1];
         try {
+            if(args[2].contains("-")) {
+                sender.sendMessage(ChatUtils.format("&cUnable to remove a negative amount!"));
+                return;
+            }
             int coins = Integer.parseInt(args[2]);
             Player op = Bukkit.getPlayerExact(playerName);
             plugin.getServer().getPluginManager().callEvent(new CoinsRemoveEvent(sender, op, coins));

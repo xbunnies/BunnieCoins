@@ -1,4 +1,4 @@
-package me.bunnie.bunniecoins.ui;
+package me.bunnie.bunniecoins.ui.history;
 
 import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.player.BCPlayer;
@@ -9,6 +9,7 @@ import me.bunnie.bunniecoins.utils.ItemBuilder;
 import me.bunnie.bunniecoins.utils.ui.menu.Button;
 import me.bunnie.bunniecoins.utils.ui.menu.page.PageMenu;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -18,17 +19,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HistoryMenu extends PageMenu {
+public class PurchaseHistoryMenu extends PageMenu {
 
     private final BCPlayer bcPlayer;
     private final BCPlugin plugin;
-    private final Player target;
+    private final OfflinePlayer target;
 
-    public HistoryMenu(Player player, Player target) {
+    public PurchaseHistoryMenu(Player player, OfflinePlayer target) {
         super(36, player);
         this.plugin = BCPlugin.getInstance();
         this.target = target;
         this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(target.getUniqueId());
+
         bcPlayer.loadPurchases();
     }
 
@@ -49,7 +51,10 @@ public class HistoryMenu extends PageMenu {
                     s = s.replace("%purchase.id%", purchase.getId());
                     s = s.replace("%purchase.cost%", String.valueOf(purchase.getCost()));
                     s = s.replace("%purchase.date%", purchase.getFormattedDate());
-                    s = s.replace("%purchase.refunded%", (purchase.isRefunded() ? "&aRefunded" : "&8&mRefunded"));
+                    s = s.replace("%purchase.refunded%", (purchase.isRefunded() ?
+                            plugin.getConfigYML().getString("placeholders.purchase-history.refund-status.true") :
+                            plugin.getConfigYML().getString("placeholders.purchase-history.refund-status.false")
+                    ));
                     if (s.contains("%product.lore%")) {
                         lore.addAll(purchase.getProduct().getDescription());
                     }

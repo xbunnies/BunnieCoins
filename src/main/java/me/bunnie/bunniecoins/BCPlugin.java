@@ -5,6 +5,7 @@ import me.bunnie.bunniecoins.commands.admin.coins.CoinsAdminCommand;
 import me.bunnie.bunniecoins.commands.admin.store.StoreAdminCommand;
 import me.bunnie.bunniecoins.commands.player.CoinsCommand;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
+import me.bunnie.bunniecoins.commands.player.WithdrawCommand;
 import me.bunnie.bunniecoins.database.MongoManager;
 import me.bunnie.bunniecoins.database.SQLManager;
 import me.bunnie.bunniecoins.hook.PAPIHook;
@@ -15,6 +16,8 @@ import me.bunnie.bunniecoins.player.BCPlayerManager;
 import me.bunnie.bunniecoins.store.ShopManager;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.Config;
+import me.bunnie.bunniecoins.utils.Metrics;
+import me.bunnie.bunniecoins.utils.UpdateUtils;
 import me.bunnie.bunniecoins.utils.ui.listener.MenuListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +45,8 @@ public final class BCPlugin extends JavaPlugin {
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PAPIHook(this).register();
         }
+
+        this.init();
     }
 
     @Override
@@ -86,9 +91,21 @@ public final class BCPlugin extends JavaPlugin {
 
     private void registerCommands() {
         new CoinsCommand(this);
+        new StoreCommand(this);
+        new WithdrawCommand(this);
+
         new CoinsAdminCommand(this);
         new StoreAdminCommand(this);
-        new StoreCommand(this);
+    }
+
+    private void init() {
+        new UpdateUtils(this, 113252).getLatestVersion(version -> {
+            if(!getDescription().getVersion().equalsIgnoreCase(version)) {
+                getLogger().log(Level.SEVERE, "You are using an outdated version! (" + getDescription().getVersion() + ")");
+                getLogger().log(Level.SEVERE, "Please update to the newest version for bug patches and newly added features! (" + version + ")" );
+            }
+        });
+        new Metrics(this, 20446);
     }
 
     public String getPrefix() {

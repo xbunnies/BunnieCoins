@@ -131,6 +131,31 @@ purchase-history:
         - "&7- &aCLICK TO REFUND &7-"
       enchanted: false
       material: "%product.icon%"
+withdraw-history:
+  title: "&dWithdraw History &f%player%"
+  buttons:
+    withdraw: #This is a static section meaning the name 'withdraw' cannot be changed without the plugin causing major errors with this menu!
+      name: "%withdraw.id%"
+      lore:
+        - "&7Amount: &f%withdraw.amount%"
+        - "&7Date of withdrawal: &f%withdraw.date%"
+        - ""
+        - "&7Withdrawn Status: &f%withdraw.withdrawn%"
+        - ""
+      enchanted: false
+      material: "PAPER"
+deposit-history:
+  title: "&dDeposit History &f%player%"
+  buttons:
+    deposit: #This is a static section meaning the name 'deposit' cannot be changed without the plugin causing major errors with this menu!
+      name: "%deposit.id%"
+      lore:
+        - "&7Amount: &f%deposit.amount%"
+        - "&7Source: &f%deposit.source%"
+        - "&7Date of deposit: &f%deposit.date%"
+        - ""
+      enchanted: false
+      material: "PAPER"
 
 insufficient-funds:
   text: "&c&lInsufficient Coins\n \n&0You need more coins to buy %product.name% %category.name%!\n \n\

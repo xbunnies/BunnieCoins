@@ -1,7 +1,7 @@
 package me.bunnie.bunniecoins.ui.confirmation;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.ProductPurchaseEvent;
+import me.bunnie.bunniecoins.events.product.ProductPurchaseEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
 import me.bunnie.bunniecoins.store.category.product.Product;
 import me.bunnie.bunniecoins.ui.action.Action;

@@ -16,13 +16,11 @@ import java.util.Objects;
 
 public class MongoManager {
 
-    private final BCPlugin plugin;
     private final MongoClient client;
     private final MongoDatabase database;
-    private final MongoCollection<Document> profiles, purchases;
+    private final MongoCollection<Document> profiles, purchases, withdrawals, deposits;
 
     public MongoManager(BCPlugin plugin) {
-        this.plugin = plugin;
         MongoClientOptions.Builder builder = new MongoClientOptions.Builder();
         builder.connectionsPerHost(700);
         ServerAddress address = new ServerAddress(
@@ -47,6 +45,10 @@ public class MongoManager {
         profiles.createIndex(Indexes.ascending("uuid"));
         purchases = database.getCollection("purchases");
         purchases.createIndex(Indexes.ascending("id"));
+        withdrawals = database.getCollection("withdrawals");
+        withdrawals.createIndex(Indexes.ascending("id"));
+        deposits = database.getCollection("deposits");
+        deposits.createIndex(Indexes.ascending("id"));
 
     }
 
@@ -56,5 +58,13 @@ public class MongoManager {
 
     public MongoCollection<Document> getPurchases() {
         return purchases;
+    }
+
+    public MongoCollection<Document> getWithdrawals() {
+        return withdrawals;
+    }
+
+    public MongoCollection<Document> getDeposits() {
+        return deposits;
     }
 }

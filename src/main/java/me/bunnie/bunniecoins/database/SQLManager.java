@@ -69,6 +69,22 @@ public class SQLManager {
                         "PURCHASE_TIMESTAMP LONG, " +
                         "REFUNDED BOOLEAN, " +
                         "PRIMARY KEY (ID)" +
+                        ")",
+                "CREATE TABLE IF NOT EXISTS bc_withdrawals(" +
+                        "ID VARCHAR(36), " +
+                        "PLAYER_UUID VARCHAR(36), " +
+                        "AMOUNT INTEGER, " +
+                        "WITHDREW_TIMESTAMP LONG, " +
+                        "WITHDRAWN BOOLEAN, " +
+                        "PRIMARY KEY (ID)" +
+                        ")",
+                "CREATE TABLE IF NOT EXISTS bc_deposits(" +
+                        "ID VARCHAR(36), " +
+                        "PLAYER_UUID VARCHAR(36), " +
+                        "WITHDRAWER VARCHAR(36), " +
+                        "AMOUNT INTEGER, " +
+                        "DEPOSIT_TIMESTAMP LONG, " +
+                        "PRIMARY KEY (ID)" +
                         ")"
         );
         if (type.equalsIgnoreCase("sqlite")) {

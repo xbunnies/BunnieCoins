@@ -1,7 +1,7 @@
 package me.bunnie.bunniecoins.ui.confirmation;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.ProductRefundEvent;
+import me.bunnie.bunniecoins.events.product.ProductRefundEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
 import me.bunnie.bunniecoins.player.purchase.Purchase;
 import me.bunnie.bunniecoins.store.category.product.Product;
@@ -122,4 +122,5 @@ public class RefundConfirmationMenu extends Menu {
             }
         };
     }
+
 }

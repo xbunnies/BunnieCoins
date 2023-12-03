@@ -18,6 +18,15 @@ settings:
         username: Username
         password: Password
         database: admin #Database where the user is located
+  withdraw-note:
+    name: "#C78DD3%currency% Note"
+    lore:
+      - "#C78DD3Withdrawn By: &f%player%"
+      - "#C78DD3Withdraw Date: &f%withdraw.date%"
+      - ""
+      - "#C78DD3Right-Click this note to add #CCE5EA%coins% %currency% #C78DD3to your balance!"
+    material: PAPER
+    enchanted: true
 
 messages:
   on-store:
@@ -33,12 +42,40 @@ messages:
   on-refund:
     success: "%prefix% #C78DD3Refund has been issued for #CCE5EA%player%#C78DD3!"
   on-coins:
-    balance: "%prefix% #C78DD3You have #CCE5EA%player.coins% %currency%#C78DD3!"
+    balance:
+     self: "%prefix% #C78DD3You have #CCE5EA%player.coins% %currency%#C78DD3!"
+     other: "%prefix% ##CCE5EA%player% #C78DD3has #CCE5EA%player.coins% %currency%#C78DD3!"
     receive:
       target: "%prefix% #C78DD3You have received #CCE5EA%coins% %currency%#C78DD3!"
       sender: "%prefix% #C78DD3You have added #CCE5EA%coins% %currency% to #CCE5EA%player%s' #C78DD3balance!"
     removal:
       target: "%prefix% #CCE5EA%coins% %currency% #C78DD3have been removed from your balance!"
       sender: "%prefix% #C78DD3You have removed #CCE5EA%coins% %currency% from #CCE5EA%player%s' #C78DD3balance!"
+    pay:
+      target: "%prefix% #C78DD3You have received #CCE5EA%coins% %currency%#C78DD3 from #CCE5EA%sender%#C78DD3!"
+      sender: "%prefix% #C78DD3You have sent #CCE5EA%coins% %currency% #C78DD3to #CCE5EA%target%#C78DD3!"
+      self: "%prefix% #C78DD3You cannot pay #CCE5EA%currency% #C78DD3to yourself!"
   on-history:
-    load: "%prefix% #C78DD3Loading player #CCE5EA%player%s' #C78DD3purchase history!"
+    load: "%prefix% #C78DD3Loading player #CCE5EA%player%s' #C78DD3%history.type% history!"
+  on-redeem:
+    invalid: "%prefix% #C78DD3This #CCE5EA%currency% #C78DD3note is invalid!"
+    not-found: "%prefix% #C78DD3Could not find #CCE5EA%currency% #C78DD3note within the database!"
+    already-redeemed: "%prefix% #C78DD3This #CCE5EA%currency% #C78DD3note has already been redeemed!"
+    notify: "%prefix% #C78DD3Player #CCE5EA%player% #C78DD3may have a duplicated #CCE5EA%currency% #C78DD3note! Redeem attempt was cancelled."
+    success: "%prefix% #C78DD3Redeemed #CCE5EA%currency% #C78DD3note! #CCE5EA%coins% #C78DD3added to your balance! &7(#CCE5EA%player.old-balance% &7-> #CCE5EA%player.new-balance%&7)"
+  on-withdraw:
+    invalid: "%prefix% #C78DD3Unable to process this withdrawal! You only have #CCE5EA%coins% %currency% #C78DD3!"
+    success: "%prefix% #C78DD3You have withdrawn #CCE5EA%coins% %currency%#C78DD3!"
+placeholders:
+  history-types:
+    purchase: "purchase"
+    withdraw: "withdraw"
+    deposit: "deposit"
+  purchase-history:
+    refund-status:
+      true: "&aRefunded"
+      false: "&8&mRefunded"
+  withdraw-history:
+    withdrawn-status:
+      true: "&aWithdrawn"
+      false: "&8&mWithdrawn"

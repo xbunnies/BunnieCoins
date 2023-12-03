@@ -1,8 +1,8 @@
 package me.bunnie.bunniecoins.listeners;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.ProductPurchaseEvent;
-import me.bunnie.bunniecoins.events.ProductRefundEvent;
+import me.bunnie.bunniecoins.events.product.ProductPurchaseEvent;
+import me.bunnie.bunniecoins.events.product.ProductRefundEvent;
 import me.bunnie.bunniecoins.player.BCPlayer;
 import me.bunnie.bunniecoins.player.purchase.Purchase;
 import me.bunnie.bunniecoins.store.category.product.Product;

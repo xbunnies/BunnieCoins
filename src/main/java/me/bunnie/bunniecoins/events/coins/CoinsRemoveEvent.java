@@ -1,25 +1,24 @@
-package me.bunnie.bunniecoins.events;
+package me.bunnie.bunniecoins.events.coins;
 
 import lombok.Getter;
-import me.bunnie.bunniecoins.player.BCPlayer;
-import me.bunnie.bunniecoins.player.purchase.Purchase;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 @Getter
-public class ProductRefundEvent extends Event {
+public class CoinsRemoveEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
+    private final CommandSender sender;
     private final Player player;
-    private final BCPlayer bcPlayer;
-    private final Purchase purchase;
+    private final int coins;
 
-    public ProductRefundEvent(Player player, BCPlayer bcPlayer, Purchase purchase) {
+    public CoinsRemoveEvent(CommandSender sender, Player player, int coins) {
+        this.sender = sender;
         this.player = player;
-        this.bcPlayer = bcPlayer;
-        this.purchase = purchase;
+        this.coins = coins;
     }
 
     @Override

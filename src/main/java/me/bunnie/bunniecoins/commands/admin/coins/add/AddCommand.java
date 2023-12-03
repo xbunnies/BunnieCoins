@@ -1,7 +1,7 @@
 package me.bunnie.bunniecoins.commands.admin.coins.add;
 
 import me.bunnie.bunniecoins.BCPlugin;
-import me.bunnie.bunniecoins.events.CoinsAddEvent;
+import me.bunnie.bunniecoins.events.coins.CoinsAddEvent;
 import me.bunnie.bunniecoins.utils.ChatUtils;
 import me.bunnie.bunniecoins.utils.command.SubCommand;
 import org.bukkit.Bukkit;
@@ -45,9 +45,13 @@ public class AddCommand extends SubCommand {
         }
         String playerName = args[1];
         try {
+            if(args[2].contains("-")) {
+                sender.sendMessage(ChatUtils.format("&cUnable to add a negative amount!"));
+                return;
+            }
             int coins = Integer.parseInt(args[2]);
             Player op = Bukkit.getPlayerExact(playerName);
-            plugin.getServer().getPluginManager().callEvent(new CoinsAddEvent(sender, op, coins));
+            plugin.getServer().getPluginManager().callEvent(new CoinsAddEvent(sender, op, coins, true));
         } catch (NumberFormatException e) {
             sender.sendMessage(ChatUtils.format("&cProvided argument &f&o(Coins) &cis not a valid integer."));
         }
