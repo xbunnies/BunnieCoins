@@ -15,8 +15,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CategoryMenu extends Menu{
@@ -24,6 +26,7 @@ public class CategoryMenu extends Menu{
     private final BCPlugin plugin;
     private final BCPlayer bcPlayer;
     private final Category category;
+    private final DecimalFormat decimalFormat;
     private final int size;
 
 
@@ -33,6 +36,7 @@ public class CategoryMenu extends Menu{
         this.plugin = BCPlugin.getInstance();
         this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
         this.category = category;
+        this.decimalFormat = new DecimalFormat("#,###.#");
     }
 
     @Override
@@ -72,10 +76,16 @@ public class CategoryMenu extends Menu{
         return new Button() {
             @Override
             public ItemStack getItem(Player player) {
-                ArrayList<String> toLore = new ArrayList<>();
+                List<String> toReplace = product.getDescription();
+                ArrayList<String> lore = new ArrayList<>();
+                for(String s : toReplace) {
+                    s = s.replace("%product.cost%", String.valueOf(product.getCost()));
+                    s = s.replace("%product.cost-formatted%", decimalFormat.format(product.getCost()));
+                    lore.add(s);
+                }
                 return new ItemBuilder(product.getIcon())
                         .setName(product.getDisplayName())
-                        .setLore((ArrayList<String>) product.getDescription())
+                        .setLore(lore)
                         .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
                         .build();
             }

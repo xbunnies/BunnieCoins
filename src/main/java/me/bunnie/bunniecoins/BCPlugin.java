@@ -5,7 +5,7 @@ import me.bunnie.bunniecoins.commands.admin.coins.CoinsAdminCommand;
 import me.bunnie.bunniecoins.commands.admin.store.StoreAdminCommand;
 import me.bunnie.bunniecoins.commands.player.CoinsCommand;
 import me.bunnie.bunniecoins.commands.player.StoreCommand;
-import me.bunnie.bunniecoins.commands.player.WithdrawCommand;
+import me.bunnie.bunniecoins.commands.player.CoinsWithdrawCommand;
 import me.bunnie.bunniecoins.database.MongoManager;
 import me.bunnie.bunniecoins.database.SQLManager;
 import me.bunnie.bunniecoins.hook.PAPIHook;
@@ -92,7 +92,7 @@ public final class BCPlugin extends JavaPlugin {
     private void registerCommands() {
         new CoinsCommand(this);
         new StoreCommand(this);
-        new WithdrawCommand(this);
+        new CoinsWithdrawCommand(this);
 
         new CoinsAdminCommand(this);
         new StoreAdminCommand(this);

@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ public class PurchaseConfirmationMenu extends Menu {
     private final Product product;
     private final BCPlayer bcPlayer;
     private final int size;
+    private final DecimalFormat decimalFormat;
 
     public PurchaseConfirmationMenu(int size, Player player, Product product) {
         super(size, player);
@@ -31,6 +33,7 @@ public class PurchaseConfirmationMenu extends Menu {
         this.size = size;
         this.bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
         this.product = product;
+        this.decimalFormat = new DecimalFormat("#,###.#");
     }
 
     @Override
@@ -85,6 +88,7 @@ public class PurchaseConfirmationMenu extends Menu {
                 ArrayList<String> lore = new ArrayList<>();
                 for (String s : toReplace) {
                     s = s.replace("%product.cost%", String.valueOf(product.getCost()));
+                    s = s.replace("%product.cost-formatted%", decimalFormat.format(product.getCost()));
                     if (s.contains("%product.lore%")) {
                         lore.addAll(product.getDescription());
                     }

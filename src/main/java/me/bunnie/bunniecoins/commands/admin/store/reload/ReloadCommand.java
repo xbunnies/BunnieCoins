@@ -36,8 +36,8 @@ public class ReloadCommand extends SubCommand {
     public void execute(CommandSender sender, String[] args) {
         List<Config> toReload = Arrays.asList(plugin.getConfigYML(), plugin.getMenusYML(), plugin.getProductsYML());
         toReload.forEach(config -> {
-            config.save();
             config.load();
+            config.save();
         });
         sender.sendMessage(ChatUtils.format("&aReloaded BunneCoins configuration files!"));
     }

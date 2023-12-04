@@ -162,7 +162,7 @@ public class CoinsListener implements Listener {
         bcPlayer.save();
 
         player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-withdraw.success")
-                .replace("%coins%", plugin.getCurrencyName())
+                .replace("%coins%", String.valueOf(amount))
                 .replace("%currency%", plugin.getCurrencyName())
                 .replace("%prefix%", plugin.getPrefix())));
 
@@ -175,67 +175,55 @@ public class CoinsListener implements Listener {
         BCPlayer bcPlayer = event.getBcPlayer();
         ItemStack itemStack = event.getItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if(itemMeta == null) return;
+
+        if (itemMeta == null) return;
         PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
 
         String noteID = pdc.get(new NamespacedKey(plugin, "noteID"), PersistentDataType.STRING);
-        Integer noteAmount = pdc.get(new NamespacedKey(plugin, "noteAmount"), PersistentDataType.INTEGER);
 
-        if(noteID == null) {
-            player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.invalid")
-                    .replace("%currency%", plugin.getCurrencyName())
-                    .replace("%prefix%", plugin.getPrefix())));
-            return;
-        }
+        if (noteID != null) {
+            Withdraw withdraw = bcPlayer.loadWithdraw(UUID.fromString(noteID));
 
-        if(noteAmount == null) {
-            player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.invalid")
-                    .replace("%currency%", plugin.getCurrencyName())
-                    .replace("%prefix%", plugin.getPrefix())));
-            return;
-        }
-
-        Withdraw withdraw = bcPlayer.loadWithdraw(UUID.fromString(noteID));
-
-        if(withdraw == null) {
-            player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.not-found")
-                    .replace("%currency%", plugin.getCurrencyName())
-                    .replace("%prefix%", plugin.getPrefix())));
-            return;
-        }
-
-        if(withdraw.isWithdrawn()) {
-            player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.already-redeemed")
-                    .replace("%currency%", plugin.getCurrencyName())
-                    .replace("%prefix%", plugin.getPrefix())));
-
-            for(Player notify : Bukkit.getOnlinePlayers()) {
-                if(notify.hasPermission("bunniecoins.notify")) {
-                    notify.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.notify")
-                            .replace("%currency%", plugin.getCurrencyName())
-                            .replace("%player%", player.getName())
-                            .replace("%prefix%", plugin.getPrefix())));
-                }
+            if (withdraw == null) {
+                player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.not-found")
+                        .replace("%currency%", plugin.getCurrencyName())
+                        .replace("%prefix%", plugin.getPrefix())));
+                return;
             }
-            return;
+
+            if (withdraw.isWithdrawn()) {
+                player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.already-redeemed")
+                        .replace("%currency%", plugin.getCurrencyName())
+                        .replace("%prefix%", plugin.getPrefix())));
+
+                for (Player notify : Bukkit.getOnlinePlayers()) {
+                    if (notify.hasPermission("bunniecoins.notify")) {
+                        notify.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.notify")
+                                .replace("%currency%", plugin.getCurrencyName())
+                                .replace("%player%", player.getName())
+                                .replace("%prefix%", plugin.getPrefix())));
+                    }
+                }
+                return;
+            }
+
+            int balance = bcPlayer.getCoins();
+            int newBalance = balance + withdraw.getAmount();
+
+            bcPlayer.setCoins(newBalance);
+            bcPlayer.save();
+
+            player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.success")
+                    .replace("%currency%", plugin.getCurrencyName())
+                    .replace("%coins%", String.valueOf(withdraw.getAmount()))
+                    .replace("%player.old-balance%", String.valueOf(balance))
+                    .replace("%player.new-balance%", String.valueOf(newBalance))
+                    .replace("%prefix%", plugin.getPrefix())));
+
+            withdraw.setWithdrawn(true);
+            bcPlayer.saveWithdrawal(withdraw);
+
+            player.getInventory().remove(itemStack);
         }
-
-        int balance = bcPlayer.getCoins();
-        int newBalance = balance + withdraw.getAmount();
-
-        bcPlayer.setCoins(newBalance);
-        bcPlayer.save();
-
-        player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-redeem.success")
-                .replace("%currency%", plugin.getCurrencyName())
-                .replace("%coins%", String.valueOf(withdraw.getAmount()))
-                .replace("%player.old-balance%", String.valueOf(balance))
-                .replace("%player.new-balance%", String.valueOf(newBalance))
-                .replace("%prefix%", plugin.getPrefix())));
-
-        withdraw.setWithdrawn(true);
-        bcPlayer.saveWithdrawal(withdraw);
-
-        player.getInventory().remove(itemStack);
     }
 }

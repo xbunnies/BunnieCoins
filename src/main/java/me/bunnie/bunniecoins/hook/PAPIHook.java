@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.DecimalFormat;
+
 public class PAPIHook extends PlaceholderExpansion {
 
     private final BCPlugin plugin;
@@ -42,6 +44,10 @@ public class PAPIHook extends PlaceholderExpansion {
             case "currency" -> {
                 return plugin.getCurrencyName();
             }
+            case "coins-formatted" -> {
+                return new DecimalFormat("#,###.#").format(bcPlayer.getCoins());
+            }
+
         }
         return null;
     }

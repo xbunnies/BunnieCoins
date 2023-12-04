@@ -11,14 +11,14 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WithdrawCommand extends Command {
+public class CoinsWithdrawCommand extends Command {
 
     private final BCPlugin plugin;
 
-    public WithdrawCommand(BCPlugin plugin) {
+    public CoinsWithdrawCommand(BCPlugin plugin) {
         super(
-                "withdraw",
-                new String[]{"withdrawcoins"},
+                "coinswithdraw",
+                new String[]{"bcwithdraw"},
                 "Withdraw provided amount to redeemable note!",
                 "bunniecoins.commands.withdraw"
         );
