@@ -28,9 +28,7 @@ public class ShopManager {
         this.setupShop();
     }
 
-
     private void setupShop() {
-        Map<String, Product> productMap = new HashMap<>();
         String path = "store.categories";
         for (String s : menusYML.getConfigurationSection(path).getKeys(false)) {
             String categoryName = ChatUtils.fixCapitalisation(s);
@@ -66,6 +64,7 @@ public class ShopManager {
                     Material material = Material.valueOf(productsYML.getString("products." + s + ".material"));
                     int price = productsYML.getInt("products." + s + ".price");
                     int menuSlot = productsYML.getInt("products." + s + ".slot");
+                    boolean multi = productsYML.getBoolean("products." + s + ".purchase-multiple");
 
                     Product product = new Product(productName);
                     product.setDisplayName(displayName);
@@ -75,19 +74,28 @@ public class ShopManager {
                     product.setIcon(material);
                     product.setCost(price);
                     product.setMenuSlot(menuSlot);
+                    product.setMulti(multi);
 
                     if(categoryName == null) continue;
-                    Category category = categoryMap.get(ChatUtils.fixCapitalisation(categoryName));
-                    if(category == null) {
-                        continue;
-                    }
-                    if (productMap.containsKey(productName)) {
-                        continue;
-                    }
-                    productMap.put(productName, product);
-                    category.setProducts(productMap);
 
-                    plugin.getLogger().log(Level.INFO, "Loaded " + productMap.size() + " products in " + category.getName() + "!");
+                    Category category = categoryMap.get(ChatUtils.fixCapitalisation(categoryName));
+                    if (category == null) {
+                        continue;
+                    }
+
+                    Map<String, Product> categoryProductMap = category.getProducts();
+                    if (categoryProductMap == null) {
+                        categoryProductMap = new HashMap<>();
+                        category.setProducts(categoryProductMap);
+                    }
+
+                    if (categoryProductMap.containsKey(productName)) {
+                        continue;
+                    }
+
+                    categoryProductMap.put(productName, product);
+
+                    plugin.getLogger().log(Level.INFO, "Loaded " + categoryProductMap.size() + " products in " + category.getName() + "!");
                 }
             }
         }.runTaskLater(plugin, 20 * 5);

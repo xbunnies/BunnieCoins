@@ -15,8 +15,8 @@ public class Product {
     private List<String> description;
     private List<String> commands, refundCommands;
     private Material icon;
-    private int cost;
-    private int menuSlot;
+    private int cost, menuSlot;
+    private boolean multi;
 
     public Product(String name) {
         this.name = name;
@@ -27,5 +27,6 @@ public class Product {
         this.icon = Material.BOOK;
         this.cost = 500;
         this.menuSlot = 0;
+        this.multi = false;
     }
 }

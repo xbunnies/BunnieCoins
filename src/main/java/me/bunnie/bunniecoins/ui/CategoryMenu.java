@@ -2,10 +2,12 @@ package me.bunnie.bunniecoins.ui;
 
 import me.bunnie.bunniecoins.BCPlugin;
 import me.bunnie.bunniecoins.player.BCPlayer;
+import me.bunnie.bunniecoins.player.purchase.Purchase;
 import me.bunnie.bunniecoins.store.category.Category;
 import me.bunnie.bunniecoins.store.category.product.Product;
 import me.bunnie.bunniecoins.ui.confirmation.PurchaseConfirmationMenu;
 import me.bunnie.bunniecoins.ui.insufficient.InsufficientFundsMenu;
+import me.bunnie.bunniecoins.ui.insufficient.InsufficientPurchaseMenu;
 import me.bunnie.bunniecoins.utils.ItemBuilder;
 import me.bunnie.bunniecoins.utils.ui.menu.Button;
 import me.bunnie.bunniecoins.utils.ui.menu.Menu;
@@ -28,7 +30,6 @@ public class CategoryMenu extends Menu{
     private final Category category;
     private final DecimalFormat decimalFormat;
     private final int size;
-
 
     public CategoryMenu(int size, Player player, Category category) {
         super(size, player);
@@ -94,6 +95,18 @@ public class CategoryMenu extends Menu{
             public void onButtonClick(Player player, int slot, ClickType clickType) {
                 int cost = product.getCost();
                 int balance = bcPlayer.getCoins();
+
+                for (Purchase purchase : bcPlayer.getPurchases()) {
+                    if (purchase.getProduct().getName().equalsIgnoreCase(product.getName())) {
+                        if (!product.isMulti()) {
+                            if (!purchase.isRefunded())
+                                player.closeInventory();
+                            new InsufficientPurchaseMenu(player, category, product).open();
+                            return;
+                        }
+                    }
+                }
+
                 if(balance > cost || balance == cost) {
                     player.closeInventory();
                     new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("purchase-confirmation.size"), player, product).open();

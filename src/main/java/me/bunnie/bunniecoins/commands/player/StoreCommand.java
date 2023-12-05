@@ -37,6 +37,7 @@ public class StoreCommand extends Command {
             }
             int size = plugin.getMenusYML().getInt("store.size");
             new ShopMenu(size, player).open();
+
             return;
         }
         sender.sendMessage("Only players may execute this command!");

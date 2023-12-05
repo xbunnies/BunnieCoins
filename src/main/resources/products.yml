@@ -11,3 +11,17 @@ products:
       - "say %player% has purchased Seraph rank!"
     refund-commands:
       - "say %player% has refunded their Seraph rank!"
+    purchase-multiple: false #If true players can buy the product over and over.
+  commonkey:
+    name: "Common Key"
+    category: "keys"
+    lore:
+      - "&aExample Product"
+    material: TRIPWIRE_HOOK
+    slot: 0
+    price: 500
+    purchase-commands:
+      - "say %player% has purchased Common Crate Key!"
+    refund-commands:
+      - "say %player% has refunded Common Crate Key!"
+    purchase-multiple: true #If true players can buy the product over and over.

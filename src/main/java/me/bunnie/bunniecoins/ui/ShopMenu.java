@@ -33,6 +33,8 @@ public class ShopMenu extends Menu {
         this.menusYML = plugin.getMenusYML();
         this.size = size;
         bcPlayer = plugin.getBcPlayerManager().findBCPlayerByUUID(player.getUniqueId());
+
+        bcPlayer.loadPurchases();
     }
 
     @Override

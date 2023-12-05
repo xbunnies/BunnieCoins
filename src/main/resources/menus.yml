@@ -160,3 +160,5 @@ deposit-history:
 insufficient-funds:
   text: "&c&lInsufficient Coins\n \n&0You need more coins to buy %product.name% %category.name%!\n \n\
     &0Purchase more coins\n&0store.example.com\n\n<link:https://store.example.com> &a&l[OPEN STORE]&0</link>\n"
+insufficient-purchase:
+  text: "&c&lInsufficient Purchase\n \n&0You already own %product.name% %category.name%!"
