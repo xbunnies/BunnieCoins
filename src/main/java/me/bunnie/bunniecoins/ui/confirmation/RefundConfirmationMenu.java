@@ -90,7 +90,14 @@ public class RefundConfirmationMenu extends Menu {
                 List<String> toReplace = plugin.getMenusYML().getStringList(path + "." + s + ".lore");
                 ArrayList<String> lore = new ArrayList<>();
                 for (String s : toReplace) {
-                    s = s.replace("%product.cost%", String.valueOf(product.getCost()));
+
+                    if(purchase.isPurchasedAtDiscount()) {
+                        s = s.replace("%purchase.cost%", String.valueOf(purchase.getProduct().getDiscountedCost()));
+                    } else {
+                        s = s.replace("%purchase.cost%", String.valueOf(purchase.getCost()));
+                    }
+
+                    s = s.replace("%purchase.date%", purchase.getFormattedDate());
                     s = s.replace("%product.cost-formatted%", decimalFormat.format(product.getCost()));
                     s = s.replace("%purchase.date%", purchase.getFormattedDate());
                     if (s.contains("%product.lore%")) {

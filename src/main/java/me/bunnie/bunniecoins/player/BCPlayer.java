@@ -134,11 +134,11 @@ public abstract class BCPlayer {
      *
      * @param product The product being purchased.
      */
-    public void processPurchase(Product product) {
+    public void processPurchase(Product product, boolean purchasedAtDiscount) {
         Purchase purchase = new Purchase(UUID.randomUUID().toString(), product);
         this.purchases.add(purchase);
         coins = coins - product.getCost();
-
+        purchase.setPurchasedAtDiscount(purchasedAtDiscount);
         createPurchase(purchase);
         save();
     }

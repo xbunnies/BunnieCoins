@@ -151,7 +151,7 @@ public class CoinsListener implements Listener {
 
         if(balance < amount) {
             player.sendMessage(ChatUtils.format(plugin.getConfigYML().getString("messages.on-withdraw.invalid")
-                    .replace("%coins%", plugin.getCurrencyName())
+                    .replace("%coins%", String.valueOf(amount))
                     .replace("%currency%", plugin.getCurrencyName())
                     .replace("%prefix%", plugin.getPrefix())));
             return;

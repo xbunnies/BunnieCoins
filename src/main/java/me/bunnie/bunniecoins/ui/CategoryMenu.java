@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CategoryMenu extends Menu{
+public class CategoryMenu extends Menu {
 
     private final BCPlugin plugin;
     private final BCPlayer bcPlayer;
@@ -48,17 +48,17 @@ public class CategoryMenu extends Menu{
     @Override
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
-        for(Product product : category.getProducts().values()) {
-            if(product != null) {
+        for (Product product : category.getProducts().values()) {
+            if (product != null) {
                 int slot = product.getMenuSlot();
                 buttons.put(slot, getProductButton(product));
             }
         }
 
-        if(plugin.getMenusYML().getBoolean("store.filler.enabled")) {
+        if (plugin.getMenusYML().getBoolean("store.filler.enabled")) {
             Material material = Material.valueOf(plugin.getMenusYML().getString("store.filler.material"));
-            for(int i = 0; i < size; i++) {
-                if(!buttons.containsKey(i)) {
+            for (int i = 0; i < size; i++) {
+                if (!buttons.containsKey(i)) {
                     buttons.put(i, new Button() {
                         @Override
                         public ItemStack getItem(Player player) {
@@ -79,9 +79,11 @@ public class CategoryMenu extends Menu{
             public ItemStack getItem(Player player) {
                 List<String> toReplace = product.getDescription();
                 ArrayList<String> lore = new ArrayList<>();
-                for(String s : toReplace) {
+                for (String s : toReplace) {
                     s = s.replace("%product.cost%", String.valueOf(product.getCost()));
                     s = s.replace("%product.cost-formatted%", decimalFormat.format(product.getCost()));
+                    s = s.replace("%product.discount%", String.valueOf(product.getDiscountAmount()));
+                    s = s.replace("%product.discounted-cost%", String.valueOf(product.getDiscountedCost()));
                     lore.add(s);
                 }
                 return new ItemBuilder(product.getIcon())
@@ -99,23 +101,32 @@ public class CategoryMenu extends Menu{
                 for (Purchase purchase : bcPlayer.getPurchases()) {
                     if (purchase.getProduct().getName().equalsIgnoreCase(product.getName())) {
                         if (!product.isMulti()) {
-                            if (!purchase.isRefunded())
+                            if (!purchase.isRefunded()) {
                                 player.closeInventory();
-                            new InsufficientPurchaseMenu(player, category, product).open();
-                            return;
+                                new InsufficientPurchaseMenu(player, category, product).open();
+                                return;
+                            }
                         }
                     }
                 }
 
-                if(balance > cost || balance == cost) {
+                if (product.isDiscountingPrevious()) {
+                    if (balance > product.getDiscountedCost() || balance == product.getDiscountedCost()) {
+                        player.closeInventory();
+                        new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("purchase-confirmation.size"), player, product).open();
+                        return;
+                    }
+                }
+
+                if (balance > cost || balance == cost) {
                     player.closeInventory();
                     new PurchaseConfirmationMenu(plugin.getMenusYML().getInt("purchase-confirmation.size"), player, product).open();
                     return;
                 }
+
                 player.closeInventory();
                 new InsufficientFundsMenu(player, category, product).open();
             }
         };
     }
-
 }

@@ -87,13 +87,28 @@ public class PurchaseConfirmationMenu extends Menu {
                 List<String> toReplace = plugin.getMenusYML().getStringList(path + "." + s + ".lore");
                 ArrayList<String> lore = new ArrayList<>();
                 for (String s : toReplace) {
+                    if (s.contains("%product.lore%")) {
+                        for(String description : product.getDescription()) {
+                            description = description.replace("%product.cost%", String.valueOf(product.getCost()));
+                            description = description.replace("%product.cost-formatted%", decimalFormat.format(product.getCost()));
+
+                           if(product.isDiscountingPrevious()) {
+                               description = description.replace("%product.discount%", String.valueOf(product.getDiscountAmount()));
+                               description = description.replace("%product.discounted-cost%", String.valueOf(product.getDiscountedCost()));
+                           } else if(description.contains("%product.discount%") || description.contains("%product.discounted-cost%")){
+                               description = description.replace("%product.discount%", "");  // Remove the substring without leaving a blank space
+                               description = description.replace("%product.discounted-cost%", "");  // Remove the substring without leaving a blank space
+                           }
+                            lore.add(description);
+                        }
+                    }
+
                     s = s.replace("%product.cost%", String.valueOf(product.getCost()));
                     s = s.replace("%product.cost-formatted%", decimalFormat.format(product.getCost()));
-                    if (s.contains("%product.lore%")) {
-                        lore.addAll(product.getDescription());
-                    }
-                    lore.add(s);
+                    s = s.replace("%product.discount%", String.valueOf(product.getDiscountAmount()));
+                    s = s.replace("%product.discounted-cost%", String.valueOf(product.getDiscountedCost()));
 
+                    lore.add(s);
                     if (s.contains("%product.lore%")) {
                         lore.remove(s);
                     }
@@ -110,8 +125,7 @@ public class PurchaseConfirmationMenu extends Menu {
                 Action action = Action.valueOf(plugin.getMenusYML().getString(path + "." + s + ".action"));
 
                 switch (action) {
-                    case CLOSE_MENU -> player.closeInventory();
-                    case CANCEL -> player.closeInventory();
+                    case CLOSE_MENU, CANCEL -> player.closeInventory();
                     case CONFIRM -> {
                         player.closeInventory();
                         plugin.getServer().getPluginManager().callEvent(new ProductPurchaseEvent(player, bcPlayer, product));

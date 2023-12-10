@@ -76,6 +76,12 @@ public class ShopManager {
                     product.setMenuSlot(menuSlot);
                     product.setMulti(multi);
 
+                    if(productsYML.getBoolean("products." + s + ".previous-discount.enabled")) {
+                        product.setPreviousName(productsYML.getString("products." + s + ".previous-discount.product"));
+                        product.setDiscountAmount(productsYML.getInt("products." + s + ".previous-discount.amount"));
+                        product.setDiscountingPrevious(true);
+                    }
+
                     if(categoryName == null) continue;
 
                     Category category = categoryMap.get(ChatUtils.fixCapitalisation(categoryName));
@@ -95,10 +101,15 @@ public class ShopManager {
 
                     categoryProductMap.put(productName, product);
 
-                    plugin.getLogger().log(Level.INFO, "Loaded " + categoryProductMap.size() + " products in " + category.getName() + "!");
                 }
+                plugin.getLogger().log(Level.INFO, "Products have loaded!");
             }
         }.runTaskLater(plugin, 20 * 5);
+    }
+
+    public void reloadShop() {
+        categoryMap.clear();
+        setupShop();
     }
 
     public List<Category> findAllCategories() {

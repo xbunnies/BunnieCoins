@@ -31,7 +31,7 @@ public class CoinsWithdrawCommand extends Command {
             if(args.length == 0) {
                 List<String> message = new ArrayList<>();
                 message.add("&cUh Oh! It appears you have not provided the correct amount of arguments!");
-                message.add("&cUsage: &f/withdraw <amount>");
+                message.add("&cUsage: &f/coinswithdraw <amount>");
                 message.forEach(msg -> sender.sendMessage(ChatUtils.format(msg)));
                 return;
             }

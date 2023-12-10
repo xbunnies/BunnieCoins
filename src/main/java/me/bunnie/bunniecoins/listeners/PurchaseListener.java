@@ -27,20 +27,30 @@ public class PurchaseListener implements Listener {
         BCPlayer bcPlayer = event.getBcPlayer();
         Product product = event.getProduct();
         int oldBalance = bcPlayer.getCoins(), newBalance = bcPlayer.getCoins() - product.getCost();
+
+        if(product.isDiscountingPrevious()) {
+            for(Purchase purchase : bcPlayer.getPurchases()) {
+                if(purchase.getProduct().getName().equalsIgnoreCase(product.getPreviousName())) {
+                    newBalance = bcPlayer.getCoins() - product.getDiscountedCost();
+                    break;
+                }
+            }
+        }
+
         player.sendMessage(ChatUtils.format(
                 plugin.getConfigYML().getString("messages.on-purchase.success")
                         .replace("%prefix%", plugin.getPrefix())
                         .replace("%product.display-name%", product.getDisplayName())
                         .replace("%player.old-balance%", String.valueOf(oldBalance))
                         .replace("%player.balance%", String.valueOf(newBalance))
-
         ));
+
         for(String command : product.getCommands()) {
             command = command.replace("%player%", player.getName());
             plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
         }
 
-        bcPlayer.processPurchase(product);
+        bcPlayer.processPurchase(product, product.isDiscountingPrevious());
     }
 
     @EventHandler

@@ -83,7 +83,7 @@ public class BCPlayerSQLAdapter extends BCPlayer {
             @Override
             public void run() {
                 Connection connection = BCPlugin.getInstance().getSqlManager().getConnection();
-                String query = "INSERT INTO bc_purchases (ID,PLAYER_UUID,PRODUCT,COST,PURCHASE_TIMESTAMP,REFUNDED) VALUES (?,?,?,?,?,?)";
+                String query = "INSERT INTO bc_purchases (ID,PLAYER_UUID,PRODUCT,COST,PURCHASE_TIMESTAMP,REFUNDED,PURCHASED_AT_DISCOUNT) VALUES (?,?,?,?,?,?,?)";
                 try {
                     PreparedStatement ps = connection.prepareStatement(query);
                     ps.setString(1, purchase.getId());
@@ -92,6 +92,7 @@ public class BCPlayerSQLAdapter extends BCPlayer {
                     ps.setInt(4, purchase.getCost());
                     ps.setLong(5, purchase.getPurchasedAt());
                     ps.setBoolean(6, purchase.isRefunded());
+                    ps.setBoolean(7, purchase.isPurchasedAtDiscount());
                     ps.executeUpdate();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -115,6 +116,7 @@ public class BCPlayerSQLAdapter extends BCPlayer {
                         purchase.setCost(rs.getInt("COST"));
                         purchase.setPurchasedAt(rs.getLong("PURCHASE_TIMESTAMP"));
                         purchase.setRefunded(rs.getBoolean("REFUNDED"));
+                        purchase.setPurchasedAtDiscount(rs.getBoolean("PURCHASED_AT_DISCOUNT"));
                         if (getPurchases().contains(purchase)) continue;
                         getPurchases().add(purchase);
                     }
@@ -261,11 +263,12 @@ public class BCPlayerSQLAdapter extends BCPlayer {
             @Override
             public void run() {
                 Connection connection = BCPlugin.getInstance().getSqlManager().getConnection();
-                String query = "UPDATE bc_purchases SET REFUNDED=? WHERE ID=?";
+                String query = "UPDATE bc_purchases SET REFUNDED=?, PURCHASED_AT_DISCOUNT=? WHERE ID=?";
                 try {
                     PreparedStatement ps = connection.prepareStatement(query);
                     ps.setBoolean(1, purchase.isRefunded());
-                    ps.setString(2, purchase.getId());
+                    ps.setBoolean(2, purchase.isPurchasedAtDiscount());
+                    ps.setString(3, purchase.getId());
                     ps.executeUpdate();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);

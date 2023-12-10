@@ -27,7 +27,6 @@ settings:
       - "#C78DD3Right-Click this note to add #CCE5EA%coins% %currency% #C78DD3to your balance!"
     material: PAPER
     enchanted: true
-
 messages:
   on-store:
     status:

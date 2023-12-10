@@ -54,6 +54,7 @@ public class BCPlayerMongoAdapter extends BCPlayer {
         document.append("cost", purchase.getCost());
         document.append("purchase_timestamp", purchase.getPurchasedAt());
         document.append("refunded", purchase.isRefunded());
+        document.append("purchased_at_discount", purchase.isPurchasedAtDiscount());
         BCPlugin.getInstance().getMongoManager().getPurchases().insertOne(document);
     }
 
@@ -64,6 +65,8 @@ public class BCPlayerMongoAdapter extends BCPlayer {
             purchase.setCost(document.getInteger("cost"));
             purchase.setPurchasedAt(document.getLong("purchase_timestamp"));
             purchase.setRefunded(document.getBoolean("refunded"));
+            purchase.setPurchasedAtDiscount(document.getBoolean("purchased_at_discount"));
+
             if (getPurchases().contains(purchase)) continue;
             getPurchases().add(purchase);
         }
@@ -144,6 +147,7 @@ public class BCPlayerMongoAdapter extends BCPlayer {
         document.append("cost", purchase.getCost());
         document.append("purchase_timestamp", purchase.getPurchasedAt());
         document.append("refunded", purchase.isRefunded());
+        document.append("purchased_at_discount", purchase.isPurchasedAtDiscount());
 
         Document document1 =  BCPlugin.getInstance().getMongoManager().getPurchases().find(
                 Filters.eq("id", purchase.getId())).first();

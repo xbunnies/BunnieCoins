@@ -4,10 +4,7 @@ import me.bunnie.bunniecoins.BCPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +65,7 @@ public class SQLManager {
                         "COST INTEGER, " +
                         "PURCHASE_TIMESTAMP LONG, " +
                         "REFUNDED BOOLEAN, " +
+                        "PURCHASED_AT_DISCOUNT BOOLEAN, " +
                         "PRIMARY KEY (ID)" +
                         ")",
                 "CREATE TABLE IF NOT EXISTS bc_withdrawals(" +
@@ -94,6 +92,7 @@ public class SQLManager {
                     for(String s : tables) {
                         statement.execute(s);
                     }
+                    updateTables(connection, "bc_purchases", "PURCHASED_AT_DISCOUNT", "BOOLEAN");
                     statement.close();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
@@ -105,10 +104,26 @@ public class SQLManager {
                 for(String s : tables) {
                     statement.execute(s);
                 }
+
+                updateTables(connection, "bc_purchases", "PURCHASED_AT_DISCOUNT", "BOOLEAN");
                 statement.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+        }
+    }
+
+    private void updateTables(Connection connection, String table, String columnToAdd, String type) {
+        try {
+            DatabaseMetaData meta = connection.getMetaData();
+            ResultSet columns = meta.getColumns(null, null, table, columnToAdd);
+            if(!columns.next()) {
+                String query = "ALTER TABLE " + table + " ADD COLUMN " + columnToAdd + " " + type + " DEFAULT FALSE";
+                connection.createStatement().executeUpdate(query);
+                plugin.getLogger().info("Your Database has been updated to contain the " + columnToAdd + " column!");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

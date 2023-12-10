@@ -49,7 +49,12 @@ public class PurchaseHistoryMenu extends PageMenu {
                 ArrayList<String> lore = new ArrayList<>();
                 for (String s : toReplace) {
                     s = s.replace("%purchase.id%", purchase.getId());
-                    s = s.replace("%purchase.cost%", String.valueOf(purchase.getCost()));
+                    if(purchase.isPurchasedAtDiscount()) {
+                        s = s.replace("%purchase.cost%", String.valueOf(purchase.getProduct().getDiscountedCost()));
+                    } else {
+                        s = s.replace("%purchase.cost%", String.valueOf(purchase.getCost()));
+                    }
+
                     s = s.replace("%purchase.date%", purchase.getFormattedDate());
                     s = s.replace("%purchase.refunded%", (purchase.isRefunded() ?
                             plugin.getConfigYML().getString("placeholders.purchase-history.refund-status.true") :

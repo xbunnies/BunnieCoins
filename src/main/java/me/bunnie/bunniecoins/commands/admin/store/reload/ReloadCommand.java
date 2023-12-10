@@ -39,6 +39,7 @@ public class ReloadCommand extends SubCommand {
             config.load();
             config.save();
         });
-        sender.sendMessage(ChatUtils.format("&aReloaded BunneCoins configuration files!"));
+        plugin.getShopManager().reloadShop();
+        sender.sendMessage(ChatUtils.format("&aBunnieCoins has been reloaded! ()"));
     }
 }

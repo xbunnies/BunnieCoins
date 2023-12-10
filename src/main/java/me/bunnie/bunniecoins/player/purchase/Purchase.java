@@ -17,7 +17,7 @@ public class Purchase {
     private final Product product;
     private int cost;
     private long purchasedAt;
-    private boolean refunded;
+    private boolean refunded, purchasedAtDiscount;
 
     /**
      * Initializes the purchase with the provided parameters and sets
@@ -29,9 +29,13 @@ public class Purchase {
     public Purchase(String id, Product product) {
         this.id = id;
         this.product = product;
+        if(product.isDiscountingPrevious()) {
+            this.cost = product.getDiscountedCost();
+        }
         this.cost = product.getCost();
         this.purchasedAt = System.currentTimeMillis();
         this.refunded = false;
+        this.purchasedAtDiscount = false;
     }
 
     /**

@@ -12,6 +12,24 @@ products:
     refund-commands:
       - "say %player% has refunded their Seraph rank!"
     purchase-multiple: false #If true players can buy the product over and over.
+  zenith:
+    name: "Zenith"
+    category: "rank"
+    lore:
+      - "&8&m%product.cost%&r &a%product.discounted-cost% &7(&f%product.discount%%&7)"
+    material: DIAMOND
+    slot: 1
+    price: 3500
+    purchase-commands:
+      - "say %player% has purchased Zenith rank!"
+    refund-commands:
+      - "say %player% has refunded their Zenith rank!"
+    purchase-multiple: false #If true players can buy the product over and over.
+    previous-discount:  #If you are wanting to offer a discount for users who have purchased the previous product.
+      enabled: true
+      product: "Seraph" #Name of the previous product.
+      amount: 10 #Percentage off the current product.
+
   commonkey:
     name: "Common Key"
     category: "keys"

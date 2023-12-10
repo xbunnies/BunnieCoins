@@ -72,8 +72,8 @@ purchase-confirmation:
       lore:
         - "%product.lore%"
         - ""
-        - "&7Cost: &f%product.cost%"
-        - ""
+        - "&aClick the Lime Wool to confirm!"
+        - "&cClick the Red Wool to cancel!"
       enchanted: false
       material: "%product.icon%"
       slot: 13
@@ -103,7 +103,7 @@ refund-confirmation:
     item:
       name: "%product.name%"
       lore:
-        - "&7Refund Cost: &f%product.cost%"
+        - "&7Refund Cost: &f%purchase.cost%"
         - "&7Date Purchased: %purchase.date%"
       enchanted: false
       material: "%product.icon%"
